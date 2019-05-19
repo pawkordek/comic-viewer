@@ -8,6 +8,9 @@
 <body>
 <header th:insert="common/header.html :: header"></header>
 <h1>All Comics:</h1>
+<tr th:each="comic : ${comics}">
+    <p th:text="${comic.getTitle()}"></p>
+</tr>
 <footer th:insert="common/footer.html :: footer"></footer>
 </body>
 </html>
