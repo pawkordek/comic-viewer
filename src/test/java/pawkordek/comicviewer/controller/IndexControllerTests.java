@@ -21,14 +21,14 @@ public class IndexControllerTests {
     private MockMvc mvc;
 
     @Test
-    public void IndexShouldMapToIndex() throws Exception {
+    public void IndexUrl_ShouldMap_ToIndexView() throws Exception {
         mvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"));
     }
 
     @Test
-    public void IndexShouldHaveAllHeaderLinks() throws Exception {
+    public void IndexView_ShouldHave_AllHeaderLinks() throws Exception {
         mvc.perform(get("/"))
                 .andExpect(content().string(containsString("<a href=\"/\">HOME</a>")))
                 .andExpect(content().string(containsString("<a href=\"/comics\">ALL COMICS</a>")));
