@@ -9,17 +9,16 @@ import java.sql.SQLException;
 @Data
 @RequiredArgsConstructor
 public class Comic {
-    @NonNull
     @Setter(AccessLevel.NONE)
-    private long id;
+    private final long id;
 
     @NonNull
     @Setter(AccessLevel.NONE)
-    private String title;
+    private final String title;
 
     @NonNull
     @Setter(AccessLevel.NONE)
-    private String path;
+    private final String path;
 
     public Comic(ResultSet resultSet) throws SQLException {
         this.id = resultSet.getInt("id");
