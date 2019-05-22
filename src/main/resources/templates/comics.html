@@ -8,9 +8,17 @@
 <body>
 <header th:insert="common/header.html :: header"></header>
 <h1>All Comics:</h1>
-<tr th:each="comic : ${comics}">
-    <p th:text="${comic.getTitle()}"></p>
-</tr>
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+    </tr>
+    </thead>
+    <tr th:each="comic : ${comics}">
+        <td th:text="${comic.getTitle()}"></td>
+    </tr>
+</table>
 <footer th:insert="common/footer.html :: footer"></footer>
 </body>
 </html>
