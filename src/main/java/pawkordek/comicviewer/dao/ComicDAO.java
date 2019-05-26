@@ -1,12 +1,20 @@
 package pawkordek.comicviewer.dao;
 
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import pawkordek.comicviewer.model.Author;
 import pawkordek.comicviewer.model.Comic;
+import pawkordek.comicviewer.model.ComicData;
 
+import javax.validation.constraints.Positive;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class ComicDAO {
@@ -14,19 +22,58 @@ public class ComicDAO {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public void create(List<Comic> comics) {
-        List<Object[]> comicsToInsert = comics.stream()
-                .map(comic -> new Object[]{
-                        comic.getTitle(),
-                        comic.getPath()
-                }).collect(Collectors.toList());
-        jdbcTemplate.batchUpdate("insert into comics (title, path) values (?,?)", comicsToInsert);
+    public List<Comic> getAll() {
+        List<ComicsTableRow> comicsTable = getComicsTable();
+        return getComicsFrom(comicsTable);
     }
 
+    private List<ComicsTableRow> getComicsTable() {
+        return jdbcTemplate.query("select comic_data_id, author_id from comics",
+                (resultSet, rowNum) -> new ComicsTableRow(resultSet));
+    }
 
-    public List<Comic> getAll() {
-        return jdbcTemplate.query("select id, title, path from comics",
-                (resultSet, rowNum) -> new Comic(resultSet));
+    private List<Comic> getComicsFrom(List<ComicsTableRow> comicsTable) {
+        List<Comic> comics = new ArrayList<>();
+        for (ComicsTableRow row : comicsTable) {
+            ComicData comicData = findComicData(row.getComic_data_id());
+            Author author = findAuthor(row.getAuthor_id());
+            comics.add(
+                    Comic.builder()
+                            .data(comicData)
+                            .author(author)
+                            .build()
+            );
+        }
+        return comics;
+    }
+
+    private ComicData findComicData(int comicDataId) {
+        return jdbcTemplate.queryForObject(
+                "select id, title, path from comic_data where id = " + comicDataId,
+                (resultSet, rowNum) -> new ComicData(resultSet)
+        );
+    }
+
+    private Author findAuthor(int authorId) {
+        return jdbcTemplate.queryForObject(
+                "select id, first_name, middle_name, last_name from authors where id = " + authorId,
+                (resultSet, rowNum) -> new Author((resultSet)));
+    }
+
+    @Data
+    private class ComicsTableRow {
+        @Positive
+        @Setter(AccessLevel.NONE)
+        private final int comic_data_id;
+
+        @Positive
+        @Setter(AccessLevel.NONE)
+        private final int author_id;
+
+        ComicsTableRow(ResultSet resultSet) throws SQLException {
+            this.comic_data_id = resultSet.getInt("comic_data_id");
+            this.author_id = resultSet.getInt(("author_id"));
+        }
     }
 }
 

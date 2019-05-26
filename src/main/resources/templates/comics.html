@@ -16,7 +16,8 @@
     </tr>
     </thead>
     <tr th:each="comic : ${comics}">
-        <td th:text="${comic.getTitle()}"></td>
+        <td th:text="${comic.getData().getTitle()}"></td>
+        <td th:text="${comic.getAuthor().getFirstName() + ' ' + comic.getAuthor().getMiddleName() + ' ' + comic.getAuthor().getLastName()}"></td>
     </tr>
 </table>
 <footer th:insert="common/footer.html :: footer"></footer>
