@@ -14,7 +14,5 @@ create table authors(
     first_name varchar(255) not null,
     middle_name varchar(255) default '',
     last_name varchar(255) not null,
-    comic_id integer,
-    foreign key (comic_id) references comics(id),
     primary key (id)
 );

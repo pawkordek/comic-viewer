@@ -7,7 +7,7 @@ values
 
 --Authors
 insert into authors
-(first_name, middle_name, last_name, comic_id)
+(first_name, middle_name, last_name)
 values
-('Janusz', '', 'Christa', (select id from comics where title = 'Kajko i kokosz')),
-('Henryk', 'Jerzy', 'Chmielewski', (select id from comics where title = 'Tytus, Romek i Atomek'));
+('Janusz', '', 'Christa'),
+('Henryk', 'Jerzy', 'Chmielewski');
