@@ -51,7 +51,6 @@ public class ComicDAOTests {
         comicDAO.create(comics);
         List<Comic> returnedComics = comicDAO.getAll();
         assertThat(returnedComics, is(not(empty())));
-        Comic comic1 = returnedComics.get(0);
         assertThat(returnedComics, hasItems(
                 allOf(
                         hasProperty("title", equalTo("Asterix & Obelix")),

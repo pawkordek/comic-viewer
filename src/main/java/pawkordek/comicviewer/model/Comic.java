@@ -2,6 +2,7 @@ package pawkordek.comicviewer.model;
 
 import lombok.*;
 
+import javax.validation.constraints.Positive;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -9,6 +10,7 @@ import java.sql.SQLException;
 @Data
 @RequiredArgsConstructor
 public class Comic {
+    @Positive
     @Setter(AccessLevel.NONE)
     private final long id;
 

@@ -17,8 +17,8 @@ public class ComicsController {
 
     @RequestMapping("/comics")
     ModelAndView comics() {
-        List<Comic> comics = comicDAO.getAll();
         ModelAndView modelAndView = new ModelAndView("comics");
+        List<Comic> comics = comicDAO.getAll();
         modelAndView.addObject("comics", comics);
         return modelAndView;
     }
