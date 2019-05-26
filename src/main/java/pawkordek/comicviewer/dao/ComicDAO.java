@@ -6,9 +6,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import pawkordek.comicviewer.model.Author;
-import pawkordek.comicviewer.model.Comic;
-import pawkordek.comicviewer.model.ComicData;
+import pawkordek.comicviewer.model.*;
 
 import javax.validation.constraints.Positive;
 import java.sql.ResultSet;
@@ -49,15 +47,13 @@ public class ComicDAO {
 
     private ComicData findComicData(int comicDataId) {
         return jdbcTemplate.queryForObject(
-                "select id, title, path from comic_data where id = " + comicDataId,
-                (resultSet, rowNum) -> new ComicData(resultSet)
+                "select id, title, path from comic_data where id = " + comicDataId, new ComicDataRowMapper()
         );
     }
 
     private Author findAuthor(int authorId) {
         return jdbcTemplate.queryForObject(
-                "select id, first_name, middle_name, last_name from authors where id = " + authorId,
-                (resultSet, rowNum) -> new Author((resultSet)));
+                "select id, first_name, middle_name, last_name from authors where id = " + authorId, new AuthorRowMapper());
     }
 
     @Data

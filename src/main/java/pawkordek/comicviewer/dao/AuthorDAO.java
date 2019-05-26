@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import pawkordek.comicviewer.model.Author;
+import pawkordek.comicviewer.model.AuthorRowMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,7 +26,6 @@ public class AuthorDAO {
     }
 
     public List<Author> getAll() {
-        return jdbcTemplate.query("select id, first_name, middle_name, last_name from authors",
-                (resultSet, rowNum) -> new Author(resultSet));
+        return jdbcTemplate.query("select id, first_name, middle_name, last_name from authors", new AuthorRowMapper());
     }
 }
