@@ -1,36 +1,35 @@
-package pawkordek.comicviewer.dao;
+package pawkordek.comicviewer.service;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
 import pawkordek.comicviewer.model.Author;
 import pawkordek.comicviewer.model.Comic;
 import pawkordek.comicviewer.model.ComicData;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.hasItems;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.core.IsCollectionContaining.hasItems;
 
 @RunWith(SpringRunner.class)
-@JdbcTest
 @ComponentScan
-public class ComicDAOTests {
+@SpringBootTest
+public class ComicsServiceTests {
 
     @Autowired
-    private ComicDAO comicDAO;
+    private ComicsService comicsService;
 
     private List<Comic> comics = new ArrayList<>();
 
     @Before
-    public void setUp() throws SQLException {
+    public void setUp() {
         ComicData comicData1 = ComicData.builder()
                 .id(1)
                 .title("Kajko i Kokosz")
@@ -41,6 +40,12 @@ public class ComicDAOTests {
                 .id(2)
                 .title("Tytus, Romek i Atomek")
                 .path("tytus_romek_atomek")
+                .build();
+
+        ComicData comicData3 = ComicData.builder()
+                .id(3)
+                .title("Asterix")
+                .path("asterix")
                 .build();
 
         Author author1 = Author.builder()
@@ -57,26 +62,45 @@ public class ComicDAOTests {
                 .lastName("Chmielewski")
                 .build();
 
+        Author author3 = Author.builder()
+                .id(3)
+                .firstName("René")
+                .middleName("")
+                .lastName("Goscinny")
+                .build();
+
+        Author author4 = Author.builder()
+                .id(4)
+                .firstName("Albert")
+                .middleName("")
+                .lastName("Uderzo")
+                .build();
+
         Comic comic1 = Comic.builder()
                 .data(comicData1)
-                .author(author1)
+                .authors(Arrays.asList(author1))
                 .build();
 
         Comic comic2 = Comic.builder()
                 .data(comicData2)
-                .author(author2)
+                .authors(Arrays.asList(author2))
+                .build();
+
+        Comic comic3 = Comic.builder()
+                .data(comicData3)
+                .authors(Arrays.asList(author3, author4))
                 .build();
 
         comics.add(comic1);
         comics.add(comic2);
+        comics.add(comic3);
     }
 
     @Test
-    public void GettingAllComics_shouldReturn_ComicsCreatedOnTestStartup() {
-        List<Comic> returnedComics = comicDAO.getAll();
-        assertThat(returnedComics, is(not(empty())));
-        assertThat(returnedComics, hasItems(
-                comics.get(0), comics.get(1)
+    public void ReturnedComics_shouldContainComics_thatWereInitializedAtTheStart() {
+        List<Comic> returnedComics = comicsService.getAllComics();
+        Assert.assertThat(returnedComics, hasItems(
+                comics.get(0), comics.get(1), comics.get(2)
         ));
     }
 }

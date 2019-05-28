@@ -9,6 +9,8 @@ import pawkordek.comicviewer.model.AuthorRowMapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static pawkordek.comicviewer.dao.helper.SQLFormatter.prepareInClause;
+
 @Repository
 public class AuthorDAO {
 
@@ -27,5 +29,14 @@ public class AuthorDAO {
 
     public List<Author> getAll() {
         return jdbcTemplate.query("select id, first_name, middle_name, last_name from authors", new AuthorRowMapper());
+    }
+
+    public List<Author> getAuthorsOfComicWithId(long id) {
+        List<Integer> authorIds = jdbcTemplate.query(
+                "select author_id from comic_data_author where comic_data_id = " + id,
+                (rs, rowNum) -> rs.getInt("author_id"));
+        return jdbcTemplate.query(
+                "select id, first_name, middle_name, last_name from authors where id in (" + prepareInClause(authorIds) + ")",
+                new AuthorRowMapper());
     }
 }

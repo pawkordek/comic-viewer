@@ -2,6 +2,8 @@ package pawkordek.comicviewer.model;
 
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @Builder
 public class Comic {
@@ -11,5 +13,5 @@ public class Comic {
 
     @NonNull
     @Setter(AccessLevel.NONE)
-    private final Author author;
+    private final List<Author> authors;
 }

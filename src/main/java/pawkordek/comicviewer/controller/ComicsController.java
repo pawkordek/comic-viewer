@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import pawkordek.comicviewer.dao.ComicDAO;
 import pawkordek.comicviewer.model.Comic;
+import pawkordek.comicviewer.service.ComicsService;
 
 import java.util.List;
 
@@ -13,12 +13,12 @@ import java.util.List;
 public class ComicsController {
 
     @Autowired
-    ComicDAO comicDAO;
+    ComicsService comicsService;
 
     @RequestMapping("/comics")
     ModelAndView comics() {
         ModelAndView modelAndView = new ModelAndView("comics");
-        List<Comic> comics = comicDAO.getAll();
+        List<Comic> comics = comicsService.getAllComics();
         modelAndView.addObject("comics", comics);
         return modelAndView;
     }

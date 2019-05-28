@@ -1,4 +1,4 @@
---Comics
+--Comic_data
 drop table if exists comic_data;
 create table comic_data(
     id integer not null auto_increment,
@@ -17,9 +17,9 @@ create table authors(
     primary key (id)
 );
 
---Comic_Author
-drop table if exists comics;
-create table comics(
+--Comic_data_Author
+drop table if exists comic_data_author;
+create table comic_data_author(
     comic_data_id int not null,
     author_id int not null,
     foreign key (comic_data_id) references comic_data(id),
