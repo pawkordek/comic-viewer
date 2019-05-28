@@ -17,9 +17,11 @@ public class Author {
 
     @NonNull
     @Setter(AccessLevel.NONE)
-    private final String middleName;
+    @Builder.Default
+    private final String middleName = "";
 
     @NonNull
     @Setter(AccessLevel.NONE)
-    private final String lastName;
+    @Builder.Default
+    private final String lastName = "";
 }

@@ -13,7 +13,7 @@ create table authors(
     id integer not null auto_increment,
     first_name varchar(255) not null,
     middle_name varchar(255) default '',
-    last_name varchar(255) not null,
+    last_name varchar(255) default '',
     primary key (id)
 );
 
