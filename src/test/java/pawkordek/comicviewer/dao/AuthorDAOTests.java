@@ -8,11 +8,13 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
 import pawkordek.comicviewer.model.Author;
+import pawkordek.comicviewer.model.AuthorRole;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
@@ -27,12 +29,18 @@ public class AuthorDAOTests {
     private List<Author> authors = new ArrayList<>();
 
     @Before
-    public void setUp() throws SQLException {
+    public void setUp() {
+        AuthorRole role1 = AuthorRole.builder()
+                .id(1)
+                .name("Writer")
+                .build();
+
         Author author1 = Author.builder()
                 .id(1)
                 .firstName("Jan")
                 .middleName("")
                 .lastName("Kowalski")
+                .roles(singletonList(role1))
                 .build();
 
         Author author2 = Author.builder()
@@ -40,6 +48,7 @@ public class AuthorDAOTests {
                 .firstName("John")
                 .middleName("Super")
                 .lastName("Smith")
+                .roles(singletonList(role1))
                 .build();
 
         authors.add(author1);
@@ -55,12 +64,26 @@ public class AuthorDAOTests {
                 allOf(
                         hasProperty("firstName", equalTo("Jan")),
                         hasProperty("middleName", equalTo("")),
-                        hasProperty("lastName", equalTo("Kowalski"))
+                        hasProperty("lastName", equalTo("Kowalski")),
+                        hasProperty("roles", hasItems(
+                                allOf(
+                                        hasProperty("name", equalTo("Writer"))
+                                )
+                                )
+
+                        )
                 ),
                 allOf(
                         hasProperty("firstName", equalTo("John")),
                         hasProperty("middleName", equalTo("Super")),
-                        hasProperty("lastName", equalTo("Smith"))
+                        hasProperty("lastName", equalTo("Smith")),
+                        hasProperty("roles", hasItems(
+                                allOf(
+                                        hasProperty("name", equalTo("Writer"))
+                                )
+                                )
+
+                        )
                 )
                 )
         );

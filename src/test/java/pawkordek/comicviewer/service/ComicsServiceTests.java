@@ -37,7 +37,7 @@ public class ComicsServiceTests {
     public void ReturnedComics_shouldContainComics_thatWereInitializedAtTheStart() {
         List<Comic> returnedComics = comicsService.getAllComics();
         Assert.assertThat(returnedComics, hasItems(
-                comics.get(0), comics.get(1), comics.get(2)
+                comic1, comic2, comic3
         ));
     }
 }

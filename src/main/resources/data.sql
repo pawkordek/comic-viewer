@@ -15,7 +15,7 @@ values
 (3, 'René', '', 'Goscinny'),
 (4, 'Albert','','Uderzo');
 
---Comics
+--Comics' authors
 insert into comic_data_author
 (comic_data_id,author_id)
 values
@@ -23,3 +23,21 @@ values
 (select id from comic_data where title = 'Tytus, Romek i Atomek', select id from authors where first_name = 'Henryk' and middle_name = 'Jerzy' and last_name = 'Chmielewski'),
 (select id from comic_data where title = 'Asterix', select id from authors where first_name = 'René' and last_name = 'Goscinny'),
 (select id from comic_data where title = 'Asterix', select id from authors where first_name = 'Albert' and last_name = 'Uderzo');
+
+--Author roles
+insert into author_roles
+(id, name)
+values
+(1, 'Writer'),
+(2, 'Artist');
+
+--Authors' roles
+insert into author_author_role
+(author_id, author_role_id)
+values
+(select id from authors where first_name = 'Janusz' and last_name = 'Christa', select id from author_roles where name = 'Writer'),
+(select id from authors where first_name = 'Janusz' and last_name = 'Christa', select id from author_roles where name = 'Artist'),
+(select id from authors where first_name = 'Henryk' and middle_name = 'Jerzy' and last_name = 'Chmielewski', select id from author_roles where name = 'Writer'),
+(select id from authors where first_name = 'Henryk' and middle_name = 'Jerzy' and last_name = 'Chmielewski', select id from author_roles where name = 'Artist'),
+(select id from authors where first_name = 'René' and last_name = 'Goscinny', select id from author_roles where name = 'Writer'),
+(select id from authors where first_name = 'Albert' and last_name = 'Uderzo', select id from author_roles where name = 'Artist');

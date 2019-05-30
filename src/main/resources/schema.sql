@@ -25,3 +25,20 @@ create table comic_data_author(
     foreign key (comic_data_id) references comic_data(id),
     foreign key (author_id) references authors(id)
 );
+
+--Author roles
+drop table if exists author_roles;
+create table author_roles(
+    id integer not null auto_increment,
+    name varchar(255) not null,
+    primary key (id)
+);
+
+--Author_Author_type
+drop table if exists author_author_role;
+create table author_author_role(
+    author_id int not null,
+    author_role_id int not null,
+    foreign key (author_id) references authors(id),
+    foreign key (author_role_id) references author_roles(id)
+);
