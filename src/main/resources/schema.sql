@@ -1,6 +1,6 @@
---Comic_data
-drop table if exists comic_data;
-create table comic_data(
+--Comic
+drop table if exists comics;
+create table comics(
     id integer not null auto_increment,
     title varchar(255) not null,
     path varchar(255) not null,
@@ -17,12 +17,12 @@ create table authors(
     primary key (id)
 );
 
---Comic_data_Author
-drop table if exists comic_data_author;
-create table comic_data_author(
-    comic_data_id int not null,
+--Comic_Author
+drop table if exists comic_author;
+create table comic_author(
+    comic_id int not null,
     author_id int not null,
-    foreign key (comic_data_id) references comic_data(id),
+    foreign key (comic_id) references comics(id),
     foreign key (author_id) references authors(id)
 );
 
@@ -34,7 +34,7 @@ create table author_roles(
     primary key (id)
 );
 
---Author_Author_type
+--Author_Author_role
 drop table if exists author_author_role;
 create table author_author_role(
     author_id int not null,

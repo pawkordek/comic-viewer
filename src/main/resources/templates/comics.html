@@ -16,7 +16,7 @@
     </tr>
     </thead>
     <tr th:each="comic : ${comics}">
-        <td th:text="${comic.getData().getTitle()}"></td>
+        <td th:text="${comic.getTitle()}"></td>
         <td>
             <div th:each="author : ${comic.getAuthors()}">
                 <div th:text="${author.getFirstName() + ' ' + author.getMiddleName() + ' ' + author.getLastName()}"></div>

@@ -1,6 +1,7 @@
 package pawkordek.comicviewer.model;
 
 import lombok.*;
+import org.simpleflatmapper.map.annotation.Key;
 
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 @Builder
 @Data
 public class Author {
+    @Key
     @Positive
     @Setter(AccessLevel.NONE)
     private final int id;

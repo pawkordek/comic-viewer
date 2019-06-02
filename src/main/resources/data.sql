@@ -1,5 +1,5 @@
---Comic_data
-insert into comic_data
+--comic
+insert into comics
 (id, title, path)
 values
 (1, 'Kajko i Kokosz', 'kajko_kokosz'),
@@ -16,13 +16,13 @@ values
 (4, 'Albert','','Uderzo');
 
 --Comics' authors
-insert into comic_data_author
-(comic_data_id,author_id)
+insert into comic_author
+(comic_id,author_id)
 values
-(select id from comic_data where title = 'Kajko i Kokosz',select id from authors where first_name = 'Janusz' and last_name = 'Christa'),
-(select id from comic_data where title = 'Tytus, Romek i Atomek', select id from authors where first_name = 'Henryk' and middle_name = 'Jerzy' and last_name = 'Chmielewski'),
-(select id from comic_data where title = 'Asterix', select id from authors where first_name = 'René' and last_name = 'Goscinny'),
-(select id from comic_data where title = 'Asterix', select id from authors where first_name = 'Albert' and last_name = 'Uderzo');
+(select id from comics where title = 'Kajko i Kokosz',select id from authors where first_name = 'Janusz' and last_name = 'Christa'),
+(select id from comics where title = 'Tytus, Romek i Atomek', select id from authors where first_name = 'Henryk' and middle_name = 'Jerzy' and last_name = 'Chmielewski'),
+(select id from comics where title = 'Asterix', select id from authors where first_name = 'René' and last_name = 'Goscinny'),
+(select id from comics where title = 'Asterix', select id from authors where first_name = 'Albert' and last_name = 'Uderzo');
 
 --Author roles
 insert into author_roles
