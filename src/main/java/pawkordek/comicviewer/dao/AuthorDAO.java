@@ -82,7 +82,6 @@ public class AuthorDAO {
     private final ResultSetExtractor<List<Author>> authorsExtractor =
             JdbcTemplateMapperFactory
                     .newInstance()
-                    .addKeys("id")
                     .newResultSetExtractor(Author.class);
 
     public List<Author> getAuthorsOfComicWithId(long comicId) {
