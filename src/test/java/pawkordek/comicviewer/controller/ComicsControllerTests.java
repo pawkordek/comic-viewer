@@ -35,7 +35,15 @@ public class ComicsControllerTests {
     }
 
     @Test
-    public void ComicUrl_ShouldMap_ToComicView() throws Exception{
+    public void ComicsView_ShouldHave_LinksToAllDisplayedComics() throws Exception {
+        mvc.perform(get("/comics"))
+                .andExpect(content().string(containsString("<a href=\"/comic/1\">Kajko i Kokosz</a>")))
+                .andExpect(content().string(containsString("<a href=\"/comic/2\">Tytus, Romek i Atomek</a>")))
+                .andExpect(content().string(containsString("<a href=\"/comic/3\">Asterix</a>")));
+    }
+
+    @Test
+    public void ComicUrl_ShouldMap_ToComicView() throws Exception {
         mvc.perform(get("/comic/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("comic"));
@@ -49,7 +57,7 @@ public class ComicsControllerTests {
     }
 
     @Test
-    public void ComicView_ShouldHave_AllComicInformationDisplayed() throws Exception{
+    public void ComicView_ShouldHave_AllComicInformationDisplayed() throws Exception {
         mvc.perform(get("/comic/2"))
                 .andExpect(content().string(containsString("Tytus, Romek i Atomek")))
                 .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")))
