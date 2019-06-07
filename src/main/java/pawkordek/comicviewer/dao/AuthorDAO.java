@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class AuthorDAO {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     private final String SELECT_ALL_AUTHOR_DATA_QUERY =
             "select a.id , a.first_name, a.middle_name, a.last_name, r.id as roles_id, r.name as roles_name " +
@@ -30,8 +30,8 @@ public class AuthorDAO {
         List<Object[]> authorsToInsert = getAuthorsToInsertFrom(authors);
         insertAuthors(authorsToInsert);
         List<Integer> insertedAuthorsIds = getInsertedAuthorsIds(authorsToInsert);
-        List<Object[]> authorsRolesToInsert = getAuthorsRolesToInsert(authors.iterator(), insertedAuthorsIds.iterator());
-        insertAuthorsRolesForInsertedAuthors(authorsRolesToInsert);
+        List<Object[]> rolesIdsPerAuthor = getRolesIdsForEveryInsertedAuthorid(authors.iterator(), insertedAuthorsIds.iterator());
+        insertRolesIdsForInsertedAuthors(rolesIdsPerAuthor);
     }
 
     private List<Object[]> getAuthorsToInsertFrom(List<Author> authors) {
@@ -56,7 +56,7 @@ public class AuthorDAO {
                 (rs, rowNum) -> rs.getInt("id"));
     }
 
-    private List<Object[]> getAuthorsRolesToInsert(Iterator<Author> authorsIterator, Iterator<Integer> authorIdsIterator) {
+    private List<Object[]> getRolesIdsForEveryInsertedAuthorid(Iterator<Author> authorsIterator, Iterator<Integer> authorIdsIterator) {
         List<Object[]> authorsRolesToInsert = new ArrayList<>();
         while (authorsIterator.hasNext() && authorIdsIterator.hasNext()) {
             List<Object[]> authorRoles = authorsIterator.next().getRoles().stream()
@@ -69,7 +69,7 @@ public class AuthorDAO {
         return authorsRolesToInsert;
     }
 
-    private void insertAuthorsRolesForInsertedAuthors(List<Object[]> authorsRolesToInsert) {
+    private void insertRolesIdsForInsertedAuthors(List<Object[]> authorsRolesToInsert) {
         jdbcTemplate.batchUpdate("insert into author_author_role (author_id, author_role_id) values (?, ?)", authorsRolesToInsert);
     }
 
@@ -89,6 +89,7 @@ public class AuthorDAO {
                 SELECT_ALL_AUTHOR_DATA_QUERY +
                         "inner join comic_data_author as c " +
                         "on a.id = c.author_id " +
-                        "where c.comic_data_id = " + comicId, authorsExtractor);
+                        "where c.comic_data_id = " + comicId,
+                authorsExtractor);
     }
 }
