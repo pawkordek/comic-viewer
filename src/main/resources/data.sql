@@ -41,3 +41,18 @@ values
 (select id from authors where first_name = 'Henryk' and middle_name = 'Jerzy' and last_name = 'Chmielewski', select id from author_roles where name = 'Artist'),
 (select id from authors where first_name = 'René' and last_name = 'Goscinny', select id from author_roles where name = 'Writer'),
 (select id from authors where first_name = 'Albert' and last_name = 'Uderzo', select id from author_roles where name = 'Artist');
+
+--Tags
+insert into tags
+(id, name)
+values
+(1, 'Polish'),
+(2, 'French');
+
+--Comics' tags
+insert into comic_tag
+(comic_id, tag_id)
+values
+(select id from comics where title = 'Kajko i Kokosz',select id from tags where name = 'Polish'),
+(select id from comics where title = 'Tytus, Romek i Atomek', select id from tags where name = 'Polish'),
+(select id from comics where title = 'Asterix', select id from tags where name = 'French');

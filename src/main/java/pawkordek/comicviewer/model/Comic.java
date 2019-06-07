@@ -9,6 +9,7 @@ import java.util.List;
 @Data
 @Builder
 public class Comic {
+
     @Key
     @Positive
     @Setter(AccessLevel.NONE)
@@ -25,4 +26,8 @@ public class Comic {
     @NonNull
     @Setter(AccessLevel.NONE)
     private final List<Author> authors;
+
+    @NonNull
+    @Setter(AccessLevel.NONE)
+    private final List<Tag> tags;
 }

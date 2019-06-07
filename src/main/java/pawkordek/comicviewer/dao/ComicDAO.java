@@ -19,7 +19,8 @@ public class ComicDAO {
         return jdbcTemplate.query(
                 "select c.id , c.title, c.path, " +
                         "a.id as authors_id, a.first_name as authors_first_name, a.middle_name as authors_middle_name, a.last_name as authors_last_name, " +
-                        "r.id as authors_roles_id, r.name as authors_roles_name " +
+                        "r.id as authors_roles_id, r.name as authors_roles_name, " +
+                        "t.id as tags_id, t.name as tags_name " +
                         "from comics as c " +
                         "inner join comic_author as ca " +
                         "on c.id = ca.comic_id " +
@@ -29,6 +30,10 @@ public class ComicDAO {
                         "on a.id = ar.author_id " +
                         "inner join author_roles as r " +
                         "on ar.author_role_id = r.id " +
+                        "inner join comic_tag as ct " +
+                        "on c.id = ct.comic_id " +
+                        "inner join tags as t " +
+                        "on t.id = ct.tag_id " +
                         "order by c.id "
                 , comicsExtractor);
     }

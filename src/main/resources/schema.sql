@@ -42,3 +42,21 @@ create table author_author_role(
     foreign key (author_id) references authors(id),
     foreign key (author_role_id) references author_roles(id)
 );
+
+--Tags
+drop table if exists tags;
+create table tags(
+    id int not null auto_increment,
+    name varchar(255) not null,
+    primary key (id)
+);
+
+--Comic_tag
+drop table if exists comic_tag;
+create table comic_tag(
+    comic_id int not null,
+    tag_id int not null,
+    foreign key (comic_id) references comics(id),
+    foreign key (tag_id) references tags(id)
+);
+
