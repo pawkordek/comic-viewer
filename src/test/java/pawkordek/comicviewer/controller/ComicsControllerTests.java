@@ -21,7 +21,7 @@ public class ComicsControllerTests {
     private MockMvc mvc;
 
     @Test
-    public void ComicsUrl_ShouldMap_ToIndexView() throws Exception {
+    public void ComicsUrl_ShouldMap_ToComicsView() throws Exception {
         mvc.perform(get("/comics"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("comics"));
@@ -33,4 +33,27 @@ public class ComicsControllerTests {
                 .andExpect(content().string(containsString("<a href=\"/\">HOME</a>")))
                 .andExpect(content().string(containsString("<a href=\"/comics\">ALL COMICS</a>")));
     }
+
+    @Test
+    public void ComicUrl_ShouldMap_ToComicView() throws Exception{
+        mvc.perform(get("/comic/1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("comic"));
+    }
+
+    @Test
+    public void ComicView_ShouldHave_AllHeaderLinks() throws Exception {
+        mvc.perform(get("/comic/1"))
+                .andExpect(content().string(containsString("<a href=\"/\">HOME</a>")))
+                .andExpect(content().string(containsString("<a href=\"/comics\">ALL COMICS</a>")));
+    }
+
+    @Test
+    public void ComicView_ShouldHave_AllComicInformationDisplayed() throws Exception{
+        mvc.perform(get("/comic/2"))
+                .andExpect(content().string(containsString("Tytus, Romek i Atomek")))
+                .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")))
+                .andExpect(content().string(containsString("Polish")));
+    }
+
 }

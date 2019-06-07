@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
+import static org.junit.Assert.assertEquals;
 import static pawkordek.comicviewer.helper.ExampleComicsProvider.*;
 
 @RunWith(SpringRunner.class)
@@ -39,5 +40,12 @@ public class ComicDAOTests {
         Assert.assertThat(returnedComics, hasItems(
                 comic1, comic2, comic3
         ));
+    }
+
+    @Test
+    public void ReturnedComic_shouldContain_theSecondComic() {
+        int id = 2;
+        Comic returnedComic = comicDAO.getComic(id);
+        assertEquals(comic2, returnedComic);
     }
 }

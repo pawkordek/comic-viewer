@@ -16,4 +16,8 @@ public class ComicsService {
     public List<Comic> getAllComics() {
         return comicDAO.getAll();
     }
+
+    public Comic getComic(int id) {
+        return comicDAO.getComic(id);
+    }
 }

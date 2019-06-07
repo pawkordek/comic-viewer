@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${comic.getTitle()}"></title>
+</head>
+<body>
+<header th:insert="common/header.html :: header"></header>
+<h1 th:text="${comic.getTitle()}"></h1>
+<p><b>Authors:</b>
+<div th:each="author : ${comic.getAuthors()}">
+    <span th:text="${author.getFirstName() + ' ' + author.getMiddleName() + ' ' + author.getLastName() + ' - '}">
+    </span>
+    <span th:each="role, iterStat : ${author.getRoles()}">
+        <span th:text="!${iterStat.last} ? ${role.getName()} + ',': ${role.getName()}"></span>
+    </span>
+</div>
+</p>
+<p><b>Tags:</b>
+<div th:each="tag : ${comic.getTags()}">
+    <div th:text="${tag.getName()}"></div>
+</div>
+</p>
+<footer th:insert="common/footer.html :: footer"></footer>
+</body>
+</html>
