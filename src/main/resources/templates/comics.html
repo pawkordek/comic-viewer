@@ -7,6 +7,11 @@
 </head>
 <body>
 <header th:insert="common/header.html :: header"></header>
+<p>Search comics by title:</p>
+<form action="#" th:action="@{/comics}" method="post">
+    <p>Title: <input type="text" th:value="${title}" name="title"/></p>
+    <p><input type="submit" value="Search"/></p>
+</form>
 <h1>All Comics:</h1>
 <table>
     <thead>

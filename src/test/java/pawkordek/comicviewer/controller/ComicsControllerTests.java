@@ -8,8 +8,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
@@ -43,6 +46,27 @@ public class ComicsControllerTests {
     }
 
     @Test
+    public void ComicsView_ShouldHave_ComicsSearchForm() throws Exception {
+        mvc.perform(get("/comics"))
+                .andExpect(content().string(containsString("<form action=\"/comics\" method=\"post\">")))
+                .andExpect(content().string(containsString("Title: <input type=\"text\" value=\"\" name=\"title\"/>")))
+                .andExpect(content().string(containsString("<input type=\"submit\" value=\"Search\"/>")));
+    }
+
+    @Test
+    public void ComicsView_ShouldHave_DataOfComicsThatHaveBeenSearchedForIndependentlyOfCase() throws Exception {
+        mvc.perform(post("/comics").param("title", "Tytus").with(csrf()))
+                .andExpect(content().string(containsString("Tytus, Romek i Atomek")))
+                .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")));
+        mvc.perform(post("/comics").param("title", "tytus").with(csrf()))
+                .andExpect(content().string(containsString("Tytus, Romek i Atomek")))
+                .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")));
+        mvc.perform(post("/comics").param("title", "TYTUS").with(csrf()))
+                .andExpect(content().string(containsString("Tytus, Romek i Atomek")))
+                .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")));
+    }
+
+    @Test
     public void ComicUrl_ShouldMap_ToComicView() throws Exception {
         mvc.perform(get("/comic/1"))
                 .andExpect(status().isOk())
@@ -63,5 +87,6 @@ public class ComicsControllerTests {
                 .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")))
                 .andExpect(content().string(containsString("Polish")));
     }
+
 
 }

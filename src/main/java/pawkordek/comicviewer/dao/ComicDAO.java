@@ -10,6 +10,7 @@ import pawkordek.comicviewer.model.Comic;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 
 @Repository
@@ -70,5 +71,26 @@ public class ComicDAO {
         } else {
             return EMPTY_COMIC;
         }
+    }
+
+    public List<Comic> getAllWithAttributes(Map<String, Object> attributes) {
+        StringBuilder queryBuilder = new StringBuilder(
+                SELECT_ALL_COMIC_DATA_QUERY +
+                        "WHERE ");
+        attributes.forEach((key, value) -> {
+            String attributeSQL = getSQLForAtribute(key, value);
+            queryBuilder.append(attributeSQL);
+        });
+        return jdbcTemplate.query(
+                queryBuilder.toString(),
+                comicsExtractor);
+    }
+
+    private String getSQLForAtribute(String attributeName, Object attributeValue) {
+        switch (attributeName) {
+            case "title":
+                return "    LOWER(c.title) like LOWER('%" + attributeValue + "%') ";
+        }
+        return "";
     }
 }
