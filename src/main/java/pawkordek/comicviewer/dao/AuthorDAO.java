@@ -19,12 +19,13 @@ public class AuthorDAO {
     private JdbcTemplate jdbcTemplate;
 
     private final String SELECT_ALL_AUTHOR_DATA_QUERY =
-            "select a.id , a.first_name, a.middle_name, a.last_name, r.id as roles_id, r.name as roles_name " +
-                    "from authors as a " +
-                    "inner join author_author_role as ar " +
-                    "on a.id = ar.author_id " +
-                    "inner join author_roles as r " +
-                    "on ar.author_role_id = r.id ";
+            "       SELECT " +
+                    "   a.id , a.first_name, a.middle_name, a.last_name, " +
+                    "   r.id AS roles_id, r.name AS roles_name " +
+                    "FROM " +
+                    "   authors AS a " +
+                    "   INNER JOIN author_author_role AS ar ON a.id = ar.author_id " +
+                    "   INNER JOIN author_roles as r ON ar.author_role_id = r.id ";
 
     public void create(List<Author> authors) {
         List<Object[]> authorsToInsert = getAuthorsToInsertFrom(authors);
@@ -45,14 +46,22 @@ public class AuthorDAO {
 
     private void insertAuthors(List<Object[]> authorsToInsert) {
         jdbcTemplate.batchUpdate(
-                "insert into authors (first_name, middle_name, last_name) values (?,?,?)",
+                "   INSERT INTO " +
+                        "   authors (first_name, middle_name, last_name) " +
+                        "VALUES " +
+                        "   (?,?,?)",
                 authorsToInsert);
     }
 
     private List<Integer> getInsertedAuthorsIds(List<Object[]> authorsToInsert) {
         return jdbcTemplate.query(
-                "select id from authors order by id desc " +
-                        "limit " + authorsToInsert.size(),
+                "   SELECT " +
+                        "   id " +
+                        "FROM " +
+                        "   authors " +
+                        "ORDER BY" +
+                        "   id DESC " +
+                        "LIMIT " + authorsToInsert.size(),
                 (rs, rowNum) -> rs.getInt("id"));
     }
 
@@ -70,7 +79,12 @@ public class AuthorDAO {
     }
 
     private void insertRolesIdsForInsertedAuthors(List<Object[]> authorsRolesToInsert) {
-        jdbcTemplate.batchUpdate("insert into author_author_role (author_id, author_role_id) values (?, ?)", authorsRolesToInsert);
+        jdbcTemplate.batchUpdate(
+                "   INSERT INTO " +
+                        "   author_author_role (author_id, author_role_id) " +
+                        "VALUES " +
+                        "   (?, ?)",
+                authorsRolesToInsert);
     }
 
     public List<Author> getAll() {
@@ -87,9 +101,9 @@ public class AuthorDAO {
     public List<Author> getAuthorsOfComicWithId(long comicId) {
         return jdbcTemplate.query(
                 SELECT_ALL_AUTHOR_DATA_QUERY +
-                        "inner join comic_data_author as c " +
-                        "on a.id = c.author_id " +
-                        "where c.comic_data_id = " + comicId,
+                        "INNER JOIN comic_data_author as c ON a.id = c.author_id " +
+                        "WHERE " +
+                        "   c.comic_data_id = " + comicId,
                 authorsExtractor);
     }
 }
