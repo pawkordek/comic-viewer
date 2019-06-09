@@ -8,6 +8,7 @@
 <body>
 <header th:insert="common/header.html :: header"></header>
 <h1 th:text="${comic.getTitle()}"></h1>
+<img alt="Image not available" th:src="@{~/comics/{path}/cover.jpg(path=${comic.getPath()})}"/>
 <p><b>Authors:</b>
 <div th:each="author : ${comic.getAuthors()}">
     <span th:text="${author.getFirstName() + ' ' + author.getMiddleName() + ' ' + author.getLastName() + ' - '}">

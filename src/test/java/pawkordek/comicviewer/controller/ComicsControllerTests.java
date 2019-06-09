@@ -88,5 +88,11 @@ public class ComicsControllerTests {
                 .andExpect(content().string(containsString("Polish")));
     }
 
+    @Test
+    public void ComicView_ShouldHave_ComicCoverWithAltMessage() throws Exception {
+        mvc.perform(get("/comic/1"))
+                .andExpect(content().string(containsString("<img alt=\"Image not available\" src=\"/comics/kajko_kokosz/cover.jpg\"/>")));
+    }
+
 
 }
