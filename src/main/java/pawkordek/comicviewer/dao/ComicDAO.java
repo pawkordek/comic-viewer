@@ -1,13 +1,16 @@
 package pawkordek.comicviewer.dao;
 
+import lombok.NonNull;
 import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
-import org.simpleflatmapper.jdbc.spring.RowMapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 import pawkordek.comicviewer.model.Comic;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -23,11 +26,6 @@ public class ComicDAO {
             JdbcTemplateMapperFactory
                     .newInstance()
                     .newResultSetExtractor(Comic.class);
-
-    private final RowMapperImpl<Comic> comicRowMapper =
-            JdbcTemplateMapperFactory
-                    .newInstance()
-                    .newRowMapper(Comic.class);
 
     private final static Comic EMPTY_COMIC = Comic.builder()
             .id(0)
@@ -77,20 +75,57 @@ public class ComicDAO {
         StringBuilder queryBuilder = new StringBuilder(
                 SELECT_ALL_COMIC_DATA_QUERY +
                         "WHERE ");
-        attributes.forEach((key, value) -> {
-            String attributeSQL = getSQLForAtribute(key, value);
+        attributes.keySet().forEach((key) -> {
+            String attributeSQL = getSQLForAttribute(key);
             queryBuilder.append(attributeSQL);
         });
         return jdbcTemplate.query(
                 queryBuilder.toString(),
+                new ComicPreparedStatementSetter(attributes),
                 comicsExtractor);
     }
 
-    private String getSQLForAtribute(String attributeName, Object attributeValue) {
+    private String getSQLForAttribute(String attributeName) {
         switch (attributeName) {
             case "title":
-                return "    LOWER(c.title) like LOWER('%" + attributeValue + "%') ";
+                return "    LOWER(c.title) like LOWER(?) ";
         }
         return "";
     }
+
+    private class ComicPreparedStatementSetter implements PreparedStatementSetter {
+        @NonNull
+        Map<String, Object> attributes;
+
+        @NonNull
+        private PreparedStatement preparedStatement;
+
+        private int currentAttributeNr = 1;
+
+        ComicPreparedStatementSetter(Map<String, Object> attributes) {
+            this.attributes = attributes;
+        }
+
+        @Override
+        public void setValues(PreparedStatement ps) {
+            preparedStatement = ps;
+            attributes.forEach((attributeName, attributeValue) -> {
+                try {
+                    setAttributeValueInPreparedStatement(attributeName, attributeValue);
+                    currentAttributeNr++;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        private void setAttributeValueInPreparedStatement(String attributeName, Object attributeValue) throws SQLException {
+            switch (attributeName) {
+                case "title":
+                    preparedStatement.setString(currentAttributeNr, "%"+ attributeValue.toString() + "%");
+            }
+        }
+    }
+
+
 }
