@@ -56,3 +56,13 @@ values
 (select id from comics where title = 'Kajko i Kokosz',select id from tags where name = 'Polish'),
 (select id from comics where title = 'Tytus, Romek i Atomek', select id from tags where name = 'Polish'),
 (select id from comics where title = 'Asterix', select id from tags where name = 'French');
+
+--Chapters
+insert into chapters
+(id, title, amount_of_pages, path, comic_id)
+values
+(1, 'KK1', 10, 'kk1', select id from comics where title = 'Kajko i Kokosz'),
+(2, 'KK2', 20, 'kk2', select id from comics where title = 'Kajko i Kokosz'),
+(3, 'TRA', 30, 'tra', select id from comics where title = 'Tytus, Romek i Atomek'),
+(4, 'chapter 1', 5, 'chapter_1', select id from comics where title = 'Asterix');
+

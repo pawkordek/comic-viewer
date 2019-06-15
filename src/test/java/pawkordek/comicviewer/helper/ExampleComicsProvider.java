@@ -1,9 +1,6 @@
 package pawkordek.comicviewer.helper;
 
-import pawkordek.comicviewer.model.Author;
-import pawkordek.comicviewer.model.AuthorRole;
-import pawkordek.comicviewer.model.Comic;
-import pawkordek.comicviewer.model.Tag;
+import pawkordek.comicviewer.model.*;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -58,12 +55,41 @@ public class ExampleComicsProvider {
             .name("French")
             .build();
 
+    public final static Chapter chapter1 = Chapter.builder()
+            .id(1)
+            .title("KK1")
+            .amountOfPages(10)
+            .path("kk1")
+            .build();
+
+    public final static Chapter chapter2 = Chapter.builder()
+            .id(2)
+            .title("KK2")
+            .amountOfPages(20)
+            .path("kk2")
+            .build();
+
+    public final static Chapter chapter3 = Chapter.builder()
+            .id(3)
+            .title("TRA")
+            .amountOfPages(30)
+            .path("tra")
+            .build();
+
+    public final static Chapter chapter4 = Chapter.builder()
+            .id(4)
+            .title("chapter 1")
+            .amountOfPages(5)
+            .path("chapter_1")
+            .build();
+
     public final static Comic comic1 = Comic.builder()
             .id(1)
             .title("Kajko i Kokosz")
             .path("kajko_kokosz")
             .authors(singletonList(author1))
             .tags(singletonList(tag1))
+            .chapters(asList(chapter1, chapter2))
             .build();
 
     public final static Comic comic2 = Comic.builder()
@@ -72,6 +98,7 @@ public class ExampleComicsProvider {
             .path("tytus_romek_atomek")
             .authors(singletonList(author2))
             .tags(singletonList(tag1))
+            .chapters(singletonList(chapter3))
             .build();
 
     public final static Comic comic3 = Comic.builder()
@@ -80,5 +107,6 @@ public class ExampleComicsProvider {
             .path("asterix")
             .authors(asList(author3, author4))
             .tags(singletonList(tag2))
+            .chapters(singletonList(chapter4))
             .build();
 }

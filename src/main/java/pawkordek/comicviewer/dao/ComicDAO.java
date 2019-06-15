@@ -33,6 +33,7 @@ public class ComicDAO {
             .path("")
             .authors(Collections.emptyList())
             .tags(Collections.emptyList())
+            .chapters(Collections.emptyList())
             .build();
 
     private final String SELECT_ALL_COMIC_DATA_QUERY =
@@ -41,7 +42,9 @@ public class ComicDAO {
                     "   a.id AS authors_id, a.first_name AS authors_first_name, " +
                     "   a.middle_name AS authors_middle_name, a.last_name AS authors_last_name, " +
                     "   r.id AS authors_roles_id, r.name AS authors_roles_name, " +
-                    "   t.id AS tags_id, t.name AS tags_name " +
+                    "   t.id AS tags_id, t.name AS tags_name, " +
+                    "   ch.id AS chapters_id, ch.title AS chapters_title, ch.path AS chapters_path, " +
+                    "   ch.amount_of_pages AS chapters_amount_of_pages " +
                     "FROM " +
                     "   comics AS c " +
                     "   INNER JOIN comic_author AS ca ON c.id = ca.comic_id " +
@@ -49,7 +52,8 @@ public class ComicDAO {
                     "   INNER JOIN author_author_role AS ar ON a.id = ar.author_id " +
                     "   INNER JOIN author_roles AS r ON ar.author_role_id = r.id " +
                     "   INNER JOIN comic_tag AS ct ON c.id = ct.comic_id " +
-                    "   INNER JOIN tags AS t ON t.id = ct.tag_id ";
+                    "   INNER JOIN tags AS t ON t.id = ct.tag_id " +
+                    "   INNER JOIN chapters AS ch ON c.id = ch.comic_id ";
 
     public List<Comic> getAll() {
         return jdbcTemplate.query(

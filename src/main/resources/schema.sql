@@ -60,3 +60,14 @@ create table comic_tag(
     foreign key (tag_id) references tags(id)
 );
 
+--Chapter
+drop table if exists chapters;
+create table chapters(
+    id int not null auto_increment,
+    title varchar(255) not null,
+    amount_of_pages int not null,
+    path varchar(255) not null,
+    comic_id int not null,
+    foreign key (comic_id) references comics(id)
+)
+

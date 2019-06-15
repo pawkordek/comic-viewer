@@ -4,34 +4,24 @@ import lombok.*;
 import org.simpleflatmapper.map.annotation.Key;
 
 import javax.validation.constraints.Positive;
-import java.util.List;
 
 @Data
 @Builder
-public class Comic {
+public class Chapter {
 
     @Key
     @Positive
     @Setter(AccessLevel.NONE)
-    private final long id;
+    private final int id;
 
     @NonNull
     @Setter(AccessLevel.NONE)
     private final String title;
 
+    @Setter(AccessLevel.NONE)
+    private final int amountOfPages;
+
     @NonNull
     @Setter(AccessLevel.NONE)
     private final String path;
-
-    @NonNull
-    @Setter(AccessLevel.NONE)
-    private final List<Author> authors;
-
-    @NonNull
-    @Setter(AccessLevel.NONE)
-    private final List<Tag> tags;
-
-    @NonNull
-    @Setter(AccessLevel.NONE)
-    private final List<Chapter> chapters;
 }
