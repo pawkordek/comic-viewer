@@ -26,7 +26,10 @@
 <p>
     <b>Chapters:</b>
 <div th:each="chapter, iterStat : ${comic.getChapters()}">
-    <div th:text="${'Chapter ' + iterStat.count + ' - ' + chapter.getTitle()}"></div>
+    <a th:href="@{/comics/{comicId}/chapters/{chapterId}/pages/1
+    (comicId=${comic.getId()},
+    chapterId=${iterStat.count})
+    }" th:text="${'Chapter ' + iterStat.count + ' - ' + chapter.getTitle()}"></a>
 </div>
 </p>
 <footer th:insert="common/footer.html :: footer"></footer>
