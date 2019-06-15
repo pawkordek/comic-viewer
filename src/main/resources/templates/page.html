@@ -12,6 +12,20 @@
 chapterPath=${comic.getChapters().get(chapterId).getPath()},
 pageId=${pageId}
 )}"/>
+<p>
+<div th:unless="${pageId == 1}">
+    <a th:href="@{/comics/{comicId}/chapters/{chapterId}/pages/{pageId}
+   (comicId=${comic.getId()},
+    chapterId=${chapterId},
+    pageId=${pageId-1})}" th:text="${'Previous page'}"></a>
+</div>
+<div th:unless="${pageId == comic.getChapters().get(chapterId).getAmountOfPages()}">
+    <a th:href="@{/comics/{comicId}/chapters/{chapterId}/pages/{pageId}
+   (comicId=${comic.getId()},
+    chapterId=${chapterId},
+    pageId=${pageId+1})}" th:text="${'Next page'}"></a>
+</div>
+</p>
 <footer th:insert="common/footer.html :: footer"></footer>
 </body>
 </html>

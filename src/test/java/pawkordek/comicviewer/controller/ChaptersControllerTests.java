@@ -22,15 +22,34 @@ public class ChaptersControllerTests {
 
     @Test
     public void ChapterPageUrl_shouldMap_toPageView() throws Exception {
-        mvc.perform(get("/comics/1/chapters/1/pages/1"))
+        mvc.perform(get("/comics/1/chapters/0/pages/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("page"));
     }
 
     @Test
     public void ChapterPageView_shouldHaveCertainElements() throws Exception {
-        mvc.perform(get("/comics/1/chapters/1/pages/1"))
+        mvc.perform(get("/comics/1/chapters/0/pages/1"))
                 .andExpect(content().string(containsString("<title>Kajko i Kokosz - KK1</title>\n")))
                 .andExpect(content().string(containsString("<img alt=\"Image not available\" src=\"/comics/kajko_kokosz/kk1/1.jpg\"/>")));
+    }
+
+    @Test
+    public void ChapterPageView_shouldHaveLinksToPreviousAndNextPage_WhenBothExist() throws Exception {
+        mvc.perform(get("/comics/1/chapters/0/pages/2"))
+                .andExpect(content().string(containsString("<a href=\"/comics/1/chapters/0/pages/1\">Previous page</a>\n")))
+                .andExpect(content().string(containsString("<a href=\"/comics/1/chapters/0/pages/3\">Next page</a>\n")));
+    }
+
+    @Test
+    public void ChapterPageView_shouldHaveLinksToPreviousPage_WhenItsTheLastPage() throws Exception {
+        mvc.perform(get("/comics/1/chapters/0/pages/10"))
+                .andExpect(content().string(containsString("<a href=\"/comics/1/chapters/0/pages/9\">Previous page</a>\n")));
+    }
+
+    @Test
+    public void ChapterPageView_shouldHaveLinksToNextPage_WhenItsTheFirstPage() throws Exception {
+        mvc.perform(get("/comics/1/chapters/0/pages/1"))
+                .andExpect(content().string(containsString("<a href=\"/comics/1/chapters/0/pages/2\">Next page</a>\n")));
     }
 }

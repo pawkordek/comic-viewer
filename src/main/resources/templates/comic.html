@@ -28,7 +28,7 @@
 <div th:each="chapter, iterStat : ${comic.getChapters()}">
     <a th:href="@{/comics/{comicId}/chapters/{chapterId}/pages/1
     (comicId=${comic.getId()},
-    chapterId=${iterStat.count})
+    chapterId=${iterStat.index})
     }" th:text="${'Chapter ' + iterStat.count + ' - ' + chapter.getTitle()}"></a>
 </div>
 </p>

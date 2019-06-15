@@ -21,7 +21,7 @@ public class ChaptersController {
         ModelAndView modelAndView = new ModelAndView("page");
         Comic comic = comicsService.getComic(comicId);
         modelAndView.addObject("comic", comic);
-        modelAndView.addObject("chapterId", chapterId - 1);
+        modelAndView.addObject("chapterId", chapterId);
         modelAndView.addObject("pageId", pageId);
         return modelAndView;
     }

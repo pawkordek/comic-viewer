@@ -96,7 +96,7 @@ public class ComicsControllerTests {
     @Test
     public void ComicView_ShouldHave_ListOfChapters() throws Exception{
         mvc.perform(get("/comic/1"))
-                .andExpect(content().string(containsString("<a href=\"/comics/1/chapters/1/pages/1\">Chapter 1 - KK1</a>\n")))
-                .andExpect(content().string(containsString("<a href=\"/comics/1/chapters/2/pages/1\">Chapter 2 - KK2</a>\n")));
+                .andExpect(content().string(containsString("<a href=\"/comics/1/chapters/0/pages/1\">Chapter 1 - KK1</a>\n")))
+                .andExpect(content().string(containsString("<a href=\"/comics/1/chapters/1/pages/1\">Chapter 2 - KK2</a>\n")));
     }
 }
