@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${comic.getTitle() + ' - ' + comic.getChapters().get(chapterId).getTitle()}"></title>
+</head>
+<body>
+<header th:insert="common/header.html :: header"></header>
+<img alt="Image not available" th:src="@{~/comics/{comicPath}/{chapterPath}/{pageId}.jpg
+(comicPath=${comic.getPath()},
+chapterPath=${comic.getChapters().get(chapterId).getPath()},
+pageId=${pageId}
+)}"/>
+<footer th:insert="common/footer.html :: footer"></footer>
+</body>
+</html>
