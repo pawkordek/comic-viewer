@@ -23,6 +23,12 @@
     <div th:text="${tag.getName()}"></div>
 </div>
 </p>
+<p>
+    <b>Chapters:</b>
+<div th:each="chapter, iterStat : ${comic.getChapters()}">
+    <div th:text="${'Chapter ' + iterStat.count + ' - ' + chapter.getTitle()}"></div>
+</div>
+</p>
 <footer th:insert="common/footer.html :: footer"></footer>
 </body>
 </html>

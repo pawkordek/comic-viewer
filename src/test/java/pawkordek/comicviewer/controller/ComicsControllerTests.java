@@ -93,4 +93,10 @@ public class ComicsControllerTests {
                 .andExpect(content().string(containsString("<img alt=\"Image not available\" src=\"/comics/kajko_kokosz/cover.jpg\"/>")));
     }
 
+    @Test
+    public void ComicView_ShouldHave_ListOfChapters() throws Exception{
+        mvc.perform(get("/comic/1"))
+                .andExpect(content().string(containsString("Chapter 1 - KK1")))
+                .andExpect(content().string(containsString("Chapter 2 - KK2")));
+    }
 }
