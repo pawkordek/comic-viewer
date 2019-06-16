@@ -1,6 +1,11 @@
-<html xmlns:th="http://thymeleaf.org">
+<html xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <div th:fragment="header">
     <a th:href="@{/}">HOME</a>
     <a th:href="@{/comics}">ALL COMICS</a>
-    <a th:href="@{/login}">LOGIN</a>
+    <span sec:authorize="isAuthenticated()">
+        <a th:href="@{/user-profile}">USER PROFILE</a>
+    </span>
+    <span sec:authorize="isAnonymous()">
+        <a th:href="@{/login}">LOGIN</a>
+    </span>
 </div>

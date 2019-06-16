@@ -5,14 +5,17 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import pawkordek.comicviewer.helper.HeaderVerifier;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static pawkordek.comicviewer.helper.HeaderVerifier.*;
 
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
@@ -30,11 +33,14 @@ public class ComicsControllerTests {
     }
 
     @Test
-    public void ComicsView_ShouldHave_AllHeaderLinks() throws Exception {
-        mvc.perform(get("/comics"))
-                .andExpect(content().string(containsString("<a href=\"/\">HOME</a>")))
-                .andExpect(content().string(containsString("<a href=\"/comics\">ALL COMICS</a>")))
-                .andExpect(content().string(containsString("<a href=\"/login\">LOGIN</a>")));
+    public void ComicsView_ShouldHaveProperHeaderLinks_WhenNotLoggedIn() throws Exception {
+        expectNotLoggedInHeader(mvc.perform(get("/comics")));
+    }
+
+    @WithMockUser(roles = {"user"})
+    @Test
+    public void ComicsView_ShouldHaveProperHeaderLinks_WhenLoggedIn() throws Exception {
+        expectLoggedInHeader(mvc.perform(get("/comics")));
     }
 
     @Test
@@ -95,7 +101,7 @@ public class ComicsControllerTests {
     }
 
     @Test
-    public void ComicView_ShouldHave_ListOfChapters() throws Exception{
+    public void ComicView_ShouldHave_ListOfChapters() throws Exception {
         mvc.perform(get("/comic/1"))
                 .andExpect(content().string(containsString("<a href=\"/comics/1/chapters/0/pages/1\">Chapter 1 - KK1</a>\n")))
                 .andExpect(content().string(containsString("<a href=\"/comics/1/chapters/1/pages/1\">Chapter 2 - KK2</a>\n")));
