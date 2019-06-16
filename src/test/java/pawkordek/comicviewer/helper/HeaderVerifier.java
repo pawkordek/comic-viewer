@@ -13,9 +13,10 @@ public class HeaderVerifier {
                 .andExpect(content().string(containsString("<a href=\"/login\">LOGIN</a>")));
     }
 
-    public static ResultActions expectLoggedInHeaderForUserCalledUser(ResultActions resultActions) throws Exception{
+    public static ResultActions expectLoggedInHeaderForUserCalledUser(ResultActions resultActions) throws Exception {
         return resultActions.andExpect(content().string(containsString("<a href=\"/\">HOME</a>")))
                 .andExpect(content().string(containsString("<a href=\"/comics\">ALL COMICS</a>")))
-                .andExpect(content().string(containsString("<a href=\"/user-profile\">USER&#39;S PROFILE</a>")));
+                .andExpect(content().string(containsString("<a href=\"/user-profile\">USER&#39;S PROFILE</a>")))
+                .andExpect(content().string(containsString("<input type=\"submit\" value=\"Logout\">")));
     }
 }

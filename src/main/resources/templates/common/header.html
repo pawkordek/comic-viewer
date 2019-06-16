@@ -5,6 +5,9 @@
     <span sec:authorize="isAuthenticated()">
         <a th:href="@{/user-profile}" th:text="${#strings.toUpperCase(#authentication.name) + '''S PROFILE'}">
         </a>
+        <form action="#" th:action="@{/logout}" method="post">
+            <input type="submit" value="Logout">
+        </form>
     </span>
     <span sec:authorize="isAnonymous()">
         <a th:href="@{/login}">LOGIN</a>
