@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static pawkordek.comicviewer.helper.HeaderVerifier.expectLoggedInHeader;
+import static pawkordek.comicviewer.helper.HeaderVerifier.expectLoggedInHeaderForUserCalledUser;
 import static pawkordek.comicviewer.helper.HeaderVerifier.expectNotLoggedInHeader;
 
 @AutoConfigureMockMvc
@@ -35,9 +35,9 @@ public class IndexControllerTests {
         expectNotLoggedInHeader(mvc.perform(get("/")));
     }
 
-    @WithMockUser(roles = {"user"})
+    @WithMockUser(username = "user")
     @Test
     public void IndexView_ShouldHaveProperHeaderLinks_WhenLoggedIn() throws Exception {
-        expectLoggedInHeader(mvc.perform(get("/")));
+        expectLoggedInHeaderForUserCalledUser(mvc.perform(get("/")));
     }
 }

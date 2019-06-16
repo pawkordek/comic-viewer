@@ -3,7 +3,8 @@
     <a th:href="@{/}">HOME</a>
     <a th:href="@{/comics}">ALL COMICS</a>
     <span sec:authorize="isAuthenticated()">
-        <a th:href="@{/user-profile}">USER PROFILE</a>
+        <a th:href="@{/user-profile}" th:text="${#strings.toUpperCase(#authentication.name) + '''S PROFILE'}">
+        </a>
     </span>
     <span sec:authorize="isAnonymous()">
         <a th:href="@{/login}">LOGIN</a>

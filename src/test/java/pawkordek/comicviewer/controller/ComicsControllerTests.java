@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import pawkordek.comicviewer.helper.HeaderVerifier;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -37,10 +36,10 @@ public class ComicsControllerTests {
         expectNotLoggedInHeader(mvc.perform(get("/comics")));
     }
 
-    @WithMockUser(roles = {"user"})
+    @WithMockUser(username = "user")
     @Test
     public void ComicsView_ShouldHaveProperHeaderLinks_WhenLoggedIn() throws Exception {
-        expectLoggedInHeader(mvc.perform(get("/comics")));
+        expectLoggedInHeaderForUserCalledUser(mvc.perform(get("/comics")));
     }
 
     @Test
