@@ -66,3 +66,10 @@ values
 (3, 'TRA', 30, 'tra', select id from comics where title = 'Tytus, Romek i Atomek'),
 (4, 'chapter 1', 5, 'chapter_1', select id from comics where title = 'Asterix');
 
+--Users
+insert into users
+(id, name, login, pass, type)
+values
+(1, 'user', 'user', 'user', 'user'),
+(2, 'admin', 'admin', 'admin', 'admin');
+

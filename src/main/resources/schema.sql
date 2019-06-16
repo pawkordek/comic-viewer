@@ -69,5 +69,16 @@ create table chapters(
     path varchar(255) not null,
     comic_id int not null,
     foreign key (comic_id) references comics(id)
-)
+);
+
+--User
+drop table if exists users;
+create table users(
+    id int not null auto_increment,
+    name varchar(255) not null,
+    login varchar(255) not null,
+    pass varchar(255) not null,
+    type varchar(255) not null,
+    primary key (id)
+);
 
