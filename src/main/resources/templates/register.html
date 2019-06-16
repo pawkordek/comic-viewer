@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register in Comic Reader!</title>
+</head>
+<body>
+<header th:insert="common/header.html :: header"></header>
+<h1>Register in Comic Reader!</h1>
+<form action="#" th:action="@{/register}" method="post">
+    <p>Username: <input type="text" th:value="${username}" name="username"/>
+    <div th:if="${#lists.contains(errors, 'usernameInvalid')}">
+        Invalid username.
+    </div>
+    </p>
+    <p>Login: <input type="text" th:value="${login}" name="login"/>
+    <div th:if="${#lists.contains(errors, 'loginInvalid')}">
+        Invalid login.
+    </div>
+    </p>
+    <p>Password: <input type="password" th:value="${password}" name="password"/>
+    <div th:if="${#lists.contains(errors, 'passwordInvalid')}">
+        Invalid password.
+    </div>
+    </p>
+    <p>Confirm password: <input type="password" th:value="${passwordConfirm}" name="passwordConfirm"/>
+    <div th:if="${#lists.contains(errors, 'passwordConfirmInvalid')}">
+        Invalid password confirmation.
+    </div>
+    <div th:if="${#lists.contains(errors, 'passwordsDoNotMatch')}">
+        Passwords do not match.
+    </div>
+    </p>
+    <p><input type="submit" value="Register"/></p>
+</form>
+<footer th:insert="common/footer.html :: footer"></footer>
+</body>
+</html>

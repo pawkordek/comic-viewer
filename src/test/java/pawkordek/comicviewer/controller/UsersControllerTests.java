@@ -84,4 +84,60 @@ public class UsersControllerTests {
                 .andExpect(content().string(containsString("Password: <input type=\"password\" value=\"\" name=\"password\"/>")))
                 .andExpect(content().string(containsString("<input type=\"submit\" value=\"Login\"/>")));
     }
+
+    @Test
+    public void LoginView_shouldDisplayWelcomeMessage_IfPassedInARegisteredUsername() throws Exception {
+        mvc.perform(get("/login?registeredUser=user"))
+                .andExpect(content().string(containsString("Welcome to Comic Reader, USER!")));
+    }
+
+    @Test
+    public void RegisterView_shouldHave_registerForm() throws Exception {
+        mvc.perform(get("/register"))
+                .andExpect(content().string(containsString("<form action=\"/register\" method=\"post\">")))
+                .andExpect(content().string(containsString("Username: <input type=\"text\" value=\"\" name=\"username\"/>")))
+                .andExpect(content().string(containsString("Login: <input type=\"text\" value=\"\" name=\"login\"/>")))
+                .andExpect(content().string(containsString("Password: <input type=\"password\" value=\"\" name=\"password\"/>")))
+                .andExpect(content().string(containsString("Confirm password: <input type=\"password\" value=\"\" name=\"passwordConfirm\"/>")))
+                .andExpect(content().string(containsString("<input type=\"submit\" value=\"Register\"/>")));
+    }
+
+    @Test
+    public void RegisterView_whenRegisteredWithIncorrectData_shouldHaveErrorMessages() throws Exception {
+        RequestBuilder registerRequest = post("/register").with(csrf())
+                .param("username", "")
+                .param("login", "")
+                .param("password", "")
+                .param("passwordConfirm", "");
+
+        mvc.perform(registerRequest)
+                .andExpect(content().string(containsString("Invalid username.")))
+                .andExpect(content().string(containsString("Invalid login.")))
+                .andExpect(content().string(containsString("Invalid password.")))
+                .andExpect(content().string(containsString("Invalid password confirmation.")));
+    }
+
+    @Test
+    public void RegisterView_whenRegisteredWithPasswordAndPasswordConfirmNotBeingTheSame_shouldHaveErrorMessage() throws Exception {
+        RequestBuilder registerRequest = post("/register").with(csrf())
+                .param("username", "some name")
+                .param("login", "some login")
+                .param("password", "first password")
+                .param("passwordConfirm", "second password");
+
+        mvc.perform(registerRequest)
+                .andExpect(content().string(containsString("Passwords do not match.")));
+    }
+
+    @Test
+    public void WhenRegisteringSucceeds_shouldRedirectToLoginView_withWelcomeMessage() throws Exception {
+        RequestBuilder registerRequest = post("/register").with(csrf())
+                .param("username", "user")
+                .param("login", "login")
+                .param("password", "password")
+                .param("passwordConfirm", "password");
+
+        mvc.perform(registerRequest)
+                .andExpect(redirectedUrl("/login?registeredUser=user"));
+    }
 }

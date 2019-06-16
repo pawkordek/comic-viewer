@@ -1,5 +1,6 @@
 package pawkordek.comicviewer.dao;
 
+import org.simpleflatmapper.jdbc.spring.JdbcTemplateCrud;
 import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
@@ -11,10 +12,19 @@ import java.util.List;
 @Repository
 public class UserDAO {
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
-    private final RowMapper<User> userRowMapper = JdbcTemplateMapperFactory.newInstance().newRowMapper(User.class);
+    private final RowMapper<User> userRowMapper =
+            JdbcTemplateMapperFactory.newInstance().newRowMapper(User.class);
+
+    private final JdbcTemplateCrud<User, Integer> userCrud;
+
+    @Autowired
+    public UserDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+        userCrud =
+                JdbcTemplateMapperFactory.newInstance().crud(User.class, Integer.class).to(jdbcTemplate, "users");
+    }
 
     public User getUserWithName(String name) {
         List<User> users = jdbcTemplate.query(
@@ -28,5 +38,9 @@ public class UserDAO {
                 preparedStatement -> preparedStatement.setString(1, name),
                 userRowMapper);
         return users.get(0);
+    }
+
+    public void createUser(User user) {
+        userCrud.create(user);
     }
 }

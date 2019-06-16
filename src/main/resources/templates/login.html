@@ -7,6 +7,9 @@
 </head>
 <body>
 <header th:insert="common/header.html :: header"></header>
+<div th:if="${param.registeredUser}">
+    <h1 th:text="${'Welcome to Comic Reader, ' + #strings.toUpperCase(param.registeredUser) + '!'}"></h1>
+</div>
 <h1>Login to Comic Reader!</h1>
 <form action="#" th:action="@{/login}" method="post">
     <p>Login: <input type="text" th:value="${username}" name="username"/></p>
