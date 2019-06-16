@@ -1,6 +1,7 @@
 package pawkordek.comicviewer.model;
 
 import lombok.*;
+import org.simpleflatmapper.map.annotation.Column;
 import org.simpleflatmapper.map.annotation.Key;
 
 import javax.validation.constraints.Positive;
@@ -24,6 +25,7 @@ public class User {
 
     @NonNull
     @Setter(AccessLevel.NONE)
+    @Column("pass")
     private final String password;
 
     @NonNull

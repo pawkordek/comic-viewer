@@ -70,6 +70,6 @@ values
 insert into users
 (id, name, login, pass, type)
 values
-(1, 'user', 'user', 'user', 'user'),
-(2, 'admin', 'admin', 'admin', 'admin');
+(1, 'user', 'user', '$2a$10$eQBuCI2UDAFdU5nqYs.gbuJeWwIVgIrWJNkyHyMQFDU.pqRMEhWpO', 'user'),
+(2, 'admin', 'admin', '$2a$10$LCqdDq7cstdt4in8sIMdxev3PdnzpA6pvM7RawGzui8A/b9i0061y', 'admin');
 

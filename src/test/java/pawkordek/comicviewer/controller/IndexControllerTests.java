@@ -31,6 +31,7 @@ public class IndexControllerTests {
     public void IndexView_ShouldHave_AllHeaderLinks() throws Exception {
         mvc.perform(get("/"))
                 .andExpect(content().string(containsString("<a href=\"/\">HOME</a>")))
-                .andExpect(content().string(containsString("<a href=\"/comics\">ALL COMICS</a>")));
+                .andExpect(content().string(containsString("<a href=\"/comics\">ALL COMICS</a>")))
+                .andExpect(content().string(containsString("<a href=\"/login\">LOGIN</a>")));
     }
 }

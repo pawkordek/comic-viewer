@@ -33,7 +33,8 @@ public class ComicsControllerTests {
     public void ComicsView_ShouldHave_AllHeaderLinks() throws Exception {
         mvc.perform(get("/comics"))
                 .andExpect(content().string(containsString("<a href=\"/\">HOME</a>")))
-                .andExpect(content().string(containsString("<a href=\"/comics\">ALL COMICS</a>")));
+                .andExpect(content().string(containsString("<a href=\"/comics\">ALL COMICS</a>")))
+                .andExpect(content().string(containsString("<a href=\"/login\">LOGIN</a>")));
     }
 
     @Test
