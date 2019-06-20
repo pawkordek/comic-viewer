@@ -78,16 +78,8 @@ public class ComicDAO {
     }
 
     public List<Comic> getAllWithAttributes(Map<String, Object> attributes) {
-        final String SELECT_ALL_COMIC_DATA_WITH_ATTRIBUTES_QUERY = getQueryForAllComicsWithAttributes(attributes);
-        List<Integer> comicsIds = jdbcTemplate.query(
-                SELECT_ALL_COMIC_DATA_WITH_ATTRIBUTES_QUERY,
-                new ComicPreparedStatementSetter(attributes),
-                (rs, rowNum) -> rs.getInt("id"));
-        return jdbcTemplate.query(
-                SELECT_ALL_COMIC_DATA_QUERY +
-                        "       WHERE " +
-                        "   c.id IN (" + prepareInClause(comicsIds) + ")",
-                comicsExtractor);
+        List<Integer> comicsIds = getAllComicsIdsWithAttributes(attributes);
+        return getAllComicsWithIds(comicsIds);
     }
 
     private String getQueryForAllComicsWithAttributes(Map<String, Object> attributes) {
@@ -104,21 +96,22 @@ public class ComicDAO {
             }
         }
         return queryBuilder.toString();
-        //List<Integer> comicsIds = jdbcTemplate.query(queryBuilder.toString(),
-/*Map<String,Object> authorAttributes = new HashMap<>();
-//TODO: Skopiuj atrybuty tylko od autora
-//authorAttributes.pu
-        if (attributes.containsKey("first_name")) {
-            StringBuilder authorIdsQuery = new StringBuilder(
-                    "   SELECT a.id " +
-                            "       FROM authors AS a" +
-                            " WHERE ");
-        }
-        for (String key : attributes.keySet()) {
-            String attributeSQL = getSQLForAttribute(key);
-            queryBuilder.append(attributeSQL);
-        }
-        return queryBuilder.toString();*/
+    }
+
+    private List<Integer> getAllComicsIdsWithAttributes(Map<String, Object> attributes) {
+        final String SELECT_ALL_COMIC_DATA_WITH_ATTRIBUTES_QUERY = getQueryForAllComicsWithAttributes(attributes);
+        return jdbcTemplate.query(
+                SELECT_ALL_COMIC_DATA_WITH_ATTRIBUTES_QUERY,
+                new ComicPreparedStatementSetter(attributes),
+                (rs, rowNum) -> rs.getInt("id"));
+    }
+
+    private List<Comic> getAllComicsWithIds(List<Integer> comicsIds) {
+        return jdbcTemplate.query(
+                SELECT_ALL_COMIC_DATA_QUERY +
+                        "       WHERE " +
+                        "   c.id IN (" + prepareInClause(comicsIds) + ")",
+                comicsExtractor);
     }
 
     private String getSQLForAttribute(String attributeName) {
