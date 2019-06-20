@@ -96,4 +96,23 @@ public class ComicsServiceTests {
         List<Comic> returnedComics = comicsService.getAllComicsWithTitleOrAuthorNameLike("Christa");
         assertEquals(comic1, returnedComics.get(0));
     }
+
+    @Test
+    public void CorrectComics_shouldBeReturned_whenSearchingByAuthorTitle() {
+        List<Comic> returnedComics = comicsService.getAllComicsWithParameters(
+                "Asterix", "", "", "", Collections.emptyList()
+        );
+        assertEquals(comic3, returnedComics.get(0));
+    }
+
+    @Test
+    public void CorrectComics_shouldBeReturned_whenSearchingWithConcreteParameters() {
+        List<Integer> tagsIds = new ArrayList<>();
+        tagsIds.add(2);
+        List<Comic> returnedComics = comicsService.getAllComicsWithParameters(
+                "Tytus", "Henryk", "Jerzy", "Chmielewski",
+                tagsIds
+        );
+        assertEquals(comic2, returnedComics.get(0));
+    }
 }

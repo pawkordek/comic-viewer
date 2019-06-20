@@ -1,5 +1,7 @@
 package pawkordek.comicviewer.dao;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,63 +52,63 @@ public class ComicDAOTests {
 
     @Test
     public void EmptyList_shouldBeReturned_whenNoComicsFound() {
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("title", "This title doesn't exist");
+        List<Pair<String, Object>> attributes = new ArrayList<>();
+        attributes.add(new ImmutablePair<>("title", "This title doesn't exist"));
         List<Comic> returnedComics = comicDAO.getAllWithAttributes(attributes);
         assertEquals(Collections.emptyList(), returnedComics);
     }
 
     @Test
     public void EmptyList_shouldBeReturned_whenSearchingWithEmptyListOfAttributes() {
-        List<Comic> returnedComics = comicDAO.getAllWithAttributes(Collections.emptyMap());
+        List<Comic> returnedComics = comicDAO.getAllWithAttributes(Collections.emptyList());
         assertEquals(Collections.emptyList(), returnedComics);
 
     }
 
     @Test
     public void CorrectComics_ShouldBeReturned_WhenSearchingByTitleWhenItIsWrittenAsIs() {
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("title", "Asterix");
+        List<Pair<String, Object>> attributes = new ArrayList<>();
+        attributes.add(new ImmutablePair<>("title", "Asterix"));
         List<Comic> returnedComics = comicDAO.getAllWithAttributes(attributes);
         assertEquals(comic3, returnedComics.get(0));
     }
 
     @Test
     public void CorrectComics_ShouldBeReturned_WhenSearchingByTitleWithSmallCase() {
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("title", "asterix");
+        List<Pair<String, Object>> attributes = new ArrayList<>();
+        attributes.add(new ImmutablePair<>("title", "asterix"));
         List<Comic> returnedComics = comicDAO.getAllWithAttributes(attributes);
         assertEquals(comic3, returnedComics.get(0));
     }
 
     @Test
     public void CorrectComics_ShouldBeReturned_WhenSearchingByTitleWithBigCase() {
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("title", "ASTERIX");
+        List<Pair<String, Object>> attributes = new ArrayList<>();
+        attributes.add(new ImmutablePair<>("title", "ASTERIX"));
         List<Comic> returnedComics = comicDAO.getAllWithAttributes(attributes);
         assertEquals(comic3, returnedComics.get(0));
     }
 
     @Test
     public void CorrectComics_ShouldBeReturned_WhenSearchingByAuthorFirstName() {
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("author_first_name", "Albert");
+        List<Pair<String, Object>> attributes = new ArrayList<>();
+        attributes.add(new ImmutablePair<>("author_first_name", "Albert"));
         List<Comic> returnedComics = comicDAO.getAllWithAttributes(attributes);
         assertEquals(comic3, returnedComics.get(0));
     }
 
     @Test
     public void CorrectComics_ShouldBeReturned_WhenSearchingByAuthorMiddleName() {
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("author_middle_name", "Jerzy");
+        List<Pair<String, Object>> attributes = new ArrayList<>();
+        attributes.add(new ImmutablePair<>("author_middle_name", "Jerzy"));
         List<Comic> returnedComics = comicDAO.getAllWithAttributes(attributes);
         assertEquals(comic2, returnedComics.get(0));
     }
 
     @Test
     public void CorrectComics_ShouldBeReturned_WhenSearchingByAuthorLastName() {
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("author_last_name", "Christa");
+        List<Pair<String, Object>> attributes = new ArrayList<>();
+        attributes.add(new ImmutablePair<>("author_last_name", "Christa"));
         List<Comic> returnedComics = comicDAO.getAllWithAttributes(attributes);
         assertEquals(comic1, returnedComics.get(0));
     }

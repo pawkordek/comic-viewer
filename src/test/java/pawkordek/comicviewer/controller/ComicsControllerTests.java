@@ -15,7 +15,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static pawkordek.comicviewer.helper.verifier.ComicVerifier.expectThatCorrectComicDataIsDisplayed;
+import static pawkordek.comicviewer.helper.verifier.ComicVerifier.*;
 import static pawkordek.comicviewer.helper.verifier.HeaderVerifier.expectHeaderForLoggedInUserCalledUser;
 import static pawkordek.comicviewer.helper.verifier.HeaderVerifier.expectHeaderForNotLoggedInUser;
 
@@ -71,52 +71,52 @@ public class ComicsControllerTests {
 
     @Test
     public void ComicsView_shouldHaveDataOfComicsThatHaveBeenSearchedByTitle_independentlyOfWordsCase() throws Exception {
-        expectThatCorrectComicDataIsDisplayed(
+        expectThatComic2DataIsDisplayed(
                 performSimpleComicsSearchWithSearchCriteria("Tytus")
         );
-        expectThatCorrectComicDataIsDisplayed(
+        expectThatComic2DataIsDisplayed(
                 performSimpleComicsSearchWithSearchCriteria("tytus")
         );
-        expectThatCorrectComicDataIsDisplayed(
+        expectThatComic2DataIsDisplayed(
                 performSimpleComicsSearchWithSearchCriteria("TYTUS")
         );
     }
 
     @Test
     public void ComicsView_ShouldHave_DataOfComicsThatHaveBeenSearchedByAuthorFirstName() throws Exception {
-        expectThatCorrectComicDataIsDisplayed(
+        expectThatComic2DataIsDisplayed(
                 performSimpleComicsSearchWithSearchCriteria("henryk")
         );
-        expectThatCorrectComicDataIsDisplayed(
+        expectThatComic2DataIsDisplayed(
                 performSimpleComicsSearchWithSearchCriteria("Henryk")
         );
-        expectThatCorrectComicDataIsDisplayed(
+        expectThatComic2DataIsDisplayed(
                 performSimpleComicsSearchWithSearchCriteria("HENRYK")
         );
     }
 
     @Test
     public void ComicsView_ShouldHave_DataOfComicsThatHaveBeenSearchedByAuthorMiddleName() throws Exception {
-        expectThatCorrectComicDataIsDisplayed(
+        expectThatComic2DataIsDisplayed(
                 performSimpleComicsSearchWithSearchCriteria("Jerzy")
         );
-        expectThatCorrectComicDataIsDisplayed(
+        expectThatComic2DataIsDisplayed(
                 performSimpleComicsSearchWithSearchCriteria("jerzy")
         );
-        expectThatCorrectComicDataIsDisplayed(
+        expectThatComic2DataIsDisplayed(
                 performSimpleComicsSearchWithSearchCriteria("JERZY")
         );
     }
 
     @Test
     public void ComicsView_ShouldHave_DataOfComicsThatHaveBeenSearchedByAuthorLastName() throws Exception {
-        expectThatCorrectComicDataIsDisplayed(
+        expectThatComic2DataIsDisplayed(
                 performSimpleComicsSearchWithSearchCriteria("Chmielewski")
         );
-        expectThatCorrectComicDataIsDisplayed(
+        expectThatComic2DataIsDisplayed(
                 performSimpleComicsSearchWithSearchCriteria("chmielewski")
         );
-        expectThatCorrectComicDataIsDisplayed(
+        expectThatComic2DataIsDisplayed(
                 performSimpleComicsSearchWithSearchCriteria("CHMIELEWSKI")
         );
     }
@@ -161,6 +161,13 @@ public class ComicsControllerTests {
     }
 
     @Test
+    public void AdvancedComicsSearchUrl_shouldMap_toAdvancedComicsSearchView() throws Exception {
+        mvc.perform(get(ADVANCED_COMICS_SEARCH_URL))
+                .andExpect(status().isOk())
+                .andExpect(view().name("comics_advanced_search"));
+    }
+
+    @Test
     public void AdvancedComicsSearchView_shouldHaveProperHeaderLinks_whenNotLoggedIn() throws Exception {
         expectHeaderForNotLoggedInUser(
                 mvc.perform(get(ADVANCED_COMICS_SEARCH_URL))
@@ -172,6 +179,64 @@ public class ComicsControllerTests {
     public void AdvancedComicsSearchView_shouldHaveProperHeaderLinks_whenLoggedIn() throws Exception {
         expectHeaderForLoggedInUserCalledUser(
                 mvc.perform(get(ADVANCED_COMICS_SEARCH_URL))
+        );
+    }
+
+    @Test
+    public void AdvancedComicsSearchView_shouldContainSearchForm() throws Exception {
+        mvc.perform(get(ADVANCED_COMICS_SEARCH_URL))
+                .andExpect(content().string(containsString("<form action=\"/comics-advanced-search\" method=\"post\">")))
+                .andExpect(content().string(containsString("Search comics by:")))
+                .andExpect(content().string(containsString("Title: <input type=\"text\" placeholder=\"title\" value=\"\" name=\"title\"/>")))
+                .andExpect(content().string(containsString("Author first name: <input type=\"text\" placeholder=\"author first name\" value=\"\"\n" +
+                        "                                  name=\"authorFirstName\"/>")))
+                .andExpect(content().string(containsString("Author middle name: <input type=\"text\" placeholder=\"author middle name\" value=\"\"\n" +
+                        "                                   name=\"authorMiddleName\"/>")))
+                .andExpect(content().string(containsString("Author last name: <input type=\"text\" placeholder=\"author last name\" value=\"\"\n" +
+                        "                                 name=\"authorLastName\"/>")))
+                .andExpect(content().string(containsString("Tags:")))
+                .andExpect(content().string(containsString("<select id=\"selectedTags\" name=\"selectedTags\" multiple=\"multiple\">")))
+                .andExpect(content().string(containsString("<option value=\"1\">Polish</option>")))
+                .andExpect(content().string(containsString("<option value=\"2\">French</option>")))
+                .andExpect(content().string(containsString("</select>")))
+                .andExpect(content().string(containsString("<input type=\"submit\" value=\"Search\"/>")));
+    }
+
+    @Test
+    public void AdvancedComicSearchView_shouldHaveCorrectComic_whenSearchingByTitle() throws Exception {
+        expectThatComic2DataIsDisplayed(
+                mvc.perform(post(ADVANCED_COMICS_SEARCH_URL).param("title", "Tytus").with(csrf()))
+        );
+    }
+
+    @Test
+    public void AdvancedComicSearchView_shouldHaveCorrectComic_whenSearchingByAuthorFirstName() throws Exception {
+        expectThatComic2DataIsDisplayed(
+                mvc.perform(post(ADVANCED_COMICS_SEARCH_URL).param("authorFirstName", "Henryk").with(csrf()))
+        );
+    }
+
+    @Test
+    public void AdvancedComicSearchView_shouldHaveCorrectComic_whenSearchingByAuthorMiddleName() throws Exception {
+        expectThatComic2DataIsDisplayed(
+                mvc.perform(post(ADVANCED_COMICS_SEARCH_URL).param("authorMiddleName", "Jerzy").with(csrf()))
+        );
+    }
+
+    @Test
+    public void AdvancedComicSearchView_shouldHaveCorrectComic_whenSearchingByAuthorLastName() throws Exception {
+        expectThatComic2DataIsDisplayed(
+                mvc.perform(post(ADVANCED_COMICS_SEARCH_URL).param("authorLastName", "Chmielewski").with(csrf()))
+        );
+    }
+
+    @Test
+    public void AdvancedComicSearchView_shouldHaveCorrectComics_whenSearchingByTag() throws Exception {
+        expectThatComic1DataIsDisplayed(
+                expectThatComic2DataIsDisplayed(
+                        expectThatComic3DataIsDisplayed(
+                                mvc.perform(post(ADVANCED_COMICS_SEARCH_URL).param("selectedTags", "1,2").with(csrf()))
+                        ))
         );
     }
 }

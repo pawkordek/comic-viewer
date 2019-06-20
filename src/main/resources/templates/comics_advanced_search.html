@@ -7,7 +7,38 @@
 </head>
 <body>
 <header th:insert="common/header.html :: header"></header>
-
+<form action="#" th:action="@{/comics-advanced-search}" method="post">
+    <p>
+        Search comics by:
+    </p>
+    <p>
+        Title: <input type="text" placeholder="title" th:value="${title}" name="title"/>
+    </p>
+    <p>
+        Author first name: <input type="text" placeholder="author first name" th:value="${authorFirstName}"
+                                  name="authorFirstName"/>
+    </p>
+    <p>
+        Author middle name: <input type="text" placeholder="author middle name" th:value="${authorMiddleName}"
+                                   name="authorMiddleName"/>
+    </p>
+    <p>
+        Author last name: <input type="text" placeholder="author last name" th:value="${authorLastName}"
+                                 name="authorLastName"/>
+    </p>
+    <p>
+        Tags:
+        <select id="selectedTags" name="selectedTags" multiple="multiple">
+            <option th:each="tag : ${availableTags}" th:value="${tag.id}"
+                    th:text="${tag.name}">
+            </option>
+        </select>
+    </p>
+    <p>
+        <input type="submit" value="Search"/>
+    </p>
+</form>
+<header th:insert="common/comics_data.html :: comics_data"></header>
 <footer th:insert="common/footer.html :: footer"></footer>
 </body>
 </html>

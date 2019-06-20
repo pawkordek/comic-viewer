@@ -1,6 +1,7 @@
 package pawkordek.comicviewer.dao;
 
 import lombok.NonNull;
+import org.apache.commons.lang3.tuple.Pair;
 import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,13 +9,11 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 import pawkordek.comicviewer.model.Comic;
-import sun.security.x509.OIDMap;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import static pawkordek.comicviewer.dao.helper.SQLFormatter.prepareInClause;
 
@@ -78,7 +77,7 @@ public class ComicDAO {
         }
     }
 
-    public List<Comic> getAllWithAttributes(Map<String, Object> attributes) {
+    public List<Comic> getAllWithAttributes(List<Pair<String, Object>> attributes) {
         if (attributes.isEmpty()) {
             return Collections.emptyList();
         } else {
@@ -86,7 +85,7 @@ public class ComicDAO {
         }
     }
 
-    private List<Comic> getAllComicsWithAttributes(Map<String, Object> attributes) {
+    private List<Comic> getAllComicsWithAttributes(List<Pair<String, Object>> attributes) {
         List<Integer> comicsIds = getAllComicsIdsWithAttributes(attributes);
         if (comicsIds.isEmpty()) {
             return Collections.emptyList();
@@ -95,13 +94,13 @@ public class ComicDAO {
         }
     }
 
-    private String getQueryForAllComicsWithAttributes(Map<String, Object> attributes) {
+    private String getQueryForAllComicsWithAttributes(List<Pair<String, Object>> attributes) {
         StringBuilder queryBuilder = new StringBuilder(
                 SELECT_ALL_COMIC_DATA_QUERY +
                         "WHERE ");
         int amountOfOrs = attributes.size() - 1;
-        for (String key : attributes.keySet()) {
-            String attributeSQL = getSQLForAttribute(key);
+        for (Pair<String, Object> attribute : attributes) {
+            String attributeSQL = getSQLForAttribute(attribute.getKey());
             queryBuilder.append(attributeSQL);
             if (amountOfOrs != 0) {
                 queryBuilder.append(" OR ");
@@ -111,7 +110,7 @@ public class ComicDAO {
         return queryBuilder.toString();
     }
 
-    private List<Integer> getAllComicsIdsWithAttributes(Map<String, Object> attributes) {
+    private List<Integer> getAllComicsIdsWithAttributes(List<Pair<String, Object>> attributes) {
         final String SELECT_ALL_COMIC_DATA_WITH_ATTRIBUTES_QUERY = getQueryForAllComicsWithAttributes(attributes);
         return jdbcTemplate.query(
                 SELECT_ALL_COMIC_DATA_WITH_ATTRIBUTES_QUERY,
@@ -137,29 +136,31 @@ public class ComicDAO {
                 return "    LOWER(a.middle_name) like LOWER(?) ";
             case "author_last_name":
                 return "    LOWER(a.last_name) like LOWER(?) ";
+            case "tag_id":
+                return "    t.id = ?";
         }
         return "";
     }
 
     private class ComicPreparedStatementSetter implements PreparedStatementSetter {
         @NonNull
-        Map<String, Object> attributes;
+        List<Pair<String, Object>> attributes;
 
         @NonNull
         private PreparedStatement preparedStatement;
 
         private int currentAttributeNr = 1;
 
-        ComicPreparedStatementSetter(Map<String, Object> attributes) {
+        ComicPreparedStatementSetter(List<Pair<String, Object>> attributes) {
             this.attributes = attributes;
         }
 
         @Override
         public void setValues(PreparedStatement ps) {
             preparedStatement = ps;
-            attributes.forEach((attributeName, attributeValue) -> {
+            attributes.forEach(attribute -> {
                 try {
-                    setAttributeValueInPreparedStatement(attributeName, attributeValue);
+                    setAttributeValueInPreparedStatement(attribute.getKey(), attribute.getValue());
                     currentAttributeNr++;
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -176,6 +177,9 @@ public class ComicDAO {
                 case "author_middle_name":
                 case "author_last_name":
                     preparedStatement.setString(currentAttributeNr, attributeValue.toString());
+                    break;
+                case "tag_id":
+                    preparedStatement.setInt(currentAttributeNr, (int) attributeValue);
                     break;
             }
         }
