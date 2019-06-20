@@ -26,6 +26,7 @@ public class ComicsControllerTests {
     private final String COMICS_SIMPLE_SEARCH_URL = "/comics-search-simple";
     private final String COMICS_SIMPLE_SEARCH_PARAM = "searchCriteria";
     private final String COMICS_URL = "/comics";
+    private final String ADVANCED_COMICS_SEARCH_URL = "/comics-advanced-search";
 
     @Autowired
     private MockMvc mvc;
@@ -157,5 +158,20 @@ public class ComicsControllerTests {
         mvc.perform(get("/comic/1"))
                 .andExpect(content().string(containsString("<a href=\"/comics/1/chapters/0/pages/1\">Chapter 1 - KK1</a>\n")))
                 .andExpect(content().string(containsString("<a href=\"/comics/1/chapters/1/pages/1\">Chapter 2 - KK2</a>\n")));
+    }
+
+    @Test
+    public void AdvancedComicsSearchView_shouldHaveProperHeaderLinks_whenNotLoggedIn() throws Exception {
+        expectHeaderForNotLoggedInUser(
+                mvc.perform(get(ADVANCED_COMICS_SEARCH_URL))
+        );
+    }
+
+    @WithMockUser(username = "user")
+    @Test
+    public void AdvancedComicsSearchView_shouldHaveProperHeaderLinks_whenLoggedIn() throws Exception {
+        expectHeaderForLoggedInUserCalledUser(
+                mvc.perform(get(ADVANCED_COMICS_SEARCH_URL))
+        );
     }
 }

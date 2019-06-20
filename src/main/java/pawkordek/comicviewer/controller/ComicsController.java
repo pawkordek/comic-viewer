@@ -41,4 +41,9 @@ public class ComicsController {
         modelAndView.addObject("comic", comic);
         return modelAndView;
     }
+
+    @RequestMapping("/comics-advanced-search")
+    String displayAdvancedSearch(){
+        return "comics_advanced_search";
+    }
 }
