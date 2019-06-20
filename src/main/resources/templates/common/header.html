@@ -13,4 +13,10 @@
         <a th:href="@{/login}">LOGIN</a>
         <a th:href="@{/register}">REGISTER</a>
     </span>
+    <form action="#" th:action="@{/comics-search-simple}" method="post">
+        <span>
+            <input type="text" placeholder="Search comics by title or author:" th:value="${searchCriteria}" name="searchCriteria"/>
+            <input type="submit" value="Search"/>
+        </span>
+    </form>
 </div>
