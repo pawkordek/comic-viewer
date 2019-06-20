@@ -1,8 +1,10 @@
 package pawkordek.comicviewer.dao.helper;
 
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -17,5 +19,11 @@ public class SQLFormatterTests {
         integers.add(1);
         integers.add(100);
         assertEquals("4,12,1,100", SQLFormatter.prepareInClause(integers));
+    }
+
+    @Test
+    public void PassingInAnEmptyList_shouldEndWithException_forPrepareInClause() {
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> SQLFormatter.prepareInClause(Collections.emptyList()));
     }
 }
