@@ -17,25 +17,8 @@
     Advanced search
 </a>
 <h1>All Comics:</h1>
-<table>
-    <thead>
-    <tr>
-        <th>Title</th>
-        <th>Author(s)</th>
-    </tr>
-    </thead>
-    <tr th:each="comic : ${comics}">
-        <td>
-            <a th:href="@{/comic/{id}(id=${comic.getId()})}" th:text="${comic.getTitle()}">
-            </a>
-        </td>
-        <td>
-            <div th:each="author : ${comic.getAuthors()}">
-                <div th:text="${author.getFirstName() + ' ' + author.getMiddleName() + ' ' + author.getLastName()}"></div>
-            </div>
-        </td>
-    </tr>
-</table>
+<header th:insert="common/comics_data.html :: comics_data"></header>
+<form action="#" th:action="@{/comics-search-simple}" method="post">
 <footer th:insert="common/footer.html :: footer"></footer>
 </body>
 </html>
