@@ -7,10 +7,11 @@
 </head>
 <body>
 <header th:insert="common/header.html :: header"></header>
-<p>Search comics by title or author:</p>
 <form action="#" th:action="@{/comics-search-simple}" method="post">
-    <p>Title: <input type="text" th:value="${searchCriteria}" name="searchCriteria"/></p>
-    <p><input type="submit" value="Search"/></p>
+    <p>
+        Search comics by title or author: <input type="text" th:value="${searchCriteria}" name="searchCriteria"/>
+        <input type="submit" value="Search"/>
+    </p>
 </form>
 <h1>All Comics:</h1>
 <table>

@@ -55,7 +55,7 @@ public class ComicsControllerTests {
     public void ComicsView_ShouldHave_ComicsSearchForm() throws Exception {
         mvc.perform(get("/comics"))
                 .andExpect(content().string(containsString("<form action=\"/comics-search-simple\" method=\"post\">")))
-                .andExpect(content().string(containsString("Title: <input type=\"text\" value=\"\" name=\"searchCriteria\"/>")))
+                .andExpect(content().string(containsString("Search comics by title or author: <input type=\"text\" value=\"\" name=\"searchCriteria\"/>")))
                 .andExpect(content().string(containsString("<input type=\"submit\" value=\"Search\"/>")));
     }
 
