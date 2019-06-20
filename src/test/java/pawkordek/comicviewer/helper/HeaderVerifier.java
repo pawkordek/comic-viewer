@@ -7,14 +7,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class HeaderVerifier {
 
-    public static ResultActions expectNotLoggedInHeader(ResultActions resultActions) throws Exception {
+    public static ResultActions expectHeaderForNotLoggedInUser(ResultActions resultActions) throws Exception {
         return andExpectSimpleSearchForm(resultActions)
                 .andExpect(content().string(containsString("<a href=\"/\">HOME</a>")))
                 .andExpect(content().string(containsString("<a href=\"/comics\">ALL COMICS</a>")))
                 .andExpect(content().string(containsString("<a href=\"/login\">LOGIN</a>")));
     }
 
-    public static ResultActions expectLoggedInHeaderForUserCalledUser(ResultActions resultActions) throws Exception {
+    public static ResultActions expectHeaderForLoggedInUserCalledUser(ResultActions resultActions) throws Exception {
         return andExpectSimpleSearchForm(resultActions)
                 .andExpect(content().string(containsString("<a href=\"/\">HOME</a>")))
                 .andExpect(content().string(containsString("<a href=\"/comics\">ALL COMICS</a>")))

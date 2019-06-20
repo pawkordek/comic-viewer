@@ -15,8 +15,8 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static pawkordek.comicviewer.helper.HeaderVerifier.expectLoggedInHeaderForUserCalledUser;
-import static pawkordek.comicviewer.helper.HeaderVerifier.expectNotLoggedInHeader;
+import static pawkordek.comicviewer.helper.HeaderVerifier.expectHeaderForLoggedInUserCalledUser;
+import static pawkordek.comicviewer.helper.HeaderVerifier.expectHeaderForNotLoggedInUser;
 
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
@@ -28,13 +28,13 @@ public class UsersControllerTests {
 
     @Test
     public void LoginView_ShouldHaveProperHeaderLinks_WhenNotLoggedIn() throws Exception {
-        expectNotLoggedInHeader(mvc.perform(get("/login")));
+        expectHeaderForNotLoggedInUser(mvc.perform(get("/login")));
     }
 
     @WithMockUser(username = "user")
     @Test
     public void LoginView_ShouldHaveProperHeaderLinks_WhenLoggedIn() throws Exception {
-        expectLoggedInHeaderForUserCalledUser(mvc.perform(get("/login")));
+        expectHeaderForLoggedInUserCalledUser(mvc.perform(get("/login")));
     }
 
     @Test
