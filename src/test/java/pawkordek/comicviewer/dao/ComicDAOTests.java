@@ -74,4 +74,28 @@ public class ComicDAOTests {
         List<Comic> returnedComics = comicDAO.getAllWithAttributes(attributes);
         assertEquals(comic3, returnedComics.get(0));
     }
+
+    @Test
+    public void CorrectComics_ShouldBeReturned_WhenSearchingByAuthorFirstName(){
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("author_first_name", "Albert");
+        List<Comic> returnedComics = comicDAO.getAllWithAttributes(attributes);
+        assertEquals(comic3, returnedComics.get(0));
+    }
+
+    @Test
+    public void CorrectComics_ShouldBeReturned_WhenSearchingByAuthorMiddleName(){
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("author_middle_name", "Jerzy");
+        List<Comic> returnedComics = comicDAO.getAllWithAttributes(attributes);
+        assertEquals(comic2, returnedComics.get(0));
+    }
+
+    @Test
+    public void CorrectComics_ShouldBeReturned_WhenSearchingByAuthorLastName(){
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("author_last_name", "Christa");
+        List<Comic> returnedComics = comicDAO.getAllWithAttributes(attributes);
+        assertEquals(comic1, returnedComics.get(0));
+    }
 }

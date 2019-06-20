@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import pawkordek.comicviewer.dao.ComicDAO;
 import pawkordek.comicviewer.model.Comic;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,12 @@ public class ComicsService {
         return comicDAO.getComic(id);
     }
 
-    public List<Comic> getAllComicsWithAttributes(Map<String, Object> attributes) {
-        return comicDAO.getAllWithAttributes(attributes);
+    public List<Comic> getAllComicsWithTitleOrAuthorName(String searchCriteria) {
+        Map<String, Object> searchCriteriaAttributes = new HashMap<>();
+        searchCriteriaAttributes.put("title", searchCriteria);
+        searchCriteriaAttributes.put("author_first_name", searchCriteria);
+        searchCriteriaAttributes.put("author_middle_name", searchCriteria);
+        searchCriteriaAttributes.put("author_last_name", searchCriteria);
+        return comicDAO.getAllWithAttributes(searchCriteriaAttributes);
     }
 }

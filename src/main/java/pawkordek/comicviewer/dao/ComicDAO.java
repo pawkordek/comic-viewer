@@ -15,6 +15,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static pawkordek.comicviewer.dao.helper.SQLFormatter.prepareInClause;
+
 
 @Repository
 public class ComicDAO {
@@ -76,23 +78,59 @@ public class ComicDAO {
     }
 
     public List<Comic> getAllWithAttributes(Map<String, Object> attributes) {
+        final String SELECT_ALL_COMIC_DATA_WITH_ATTRIBUTES_QUERY = getQueryForAllComicsWithAttributes(attributes);
+        List<Integer> comicsIds = jdbcTemplate.query(
+                SELECT_ALL_COMIC_DATA_WITH_ATTRIBUTES_QUERY,
+                new ComicPreparedStatementSetter(attributes),
+                (rs, rowNum) -> rs.getInt("id"));
+        return jdbcTemplate.query(
+                SELECT_ALL_COMIC_DATA_QUERY +
+                        "       WHERE " +
+                        "   c.id IN (" + prepareInClause(comicsIds) + ")",
+                comicsExtractor);
+    }
+
+    private String getQueryForAllComicsWithAttributes(Map<String, Object> attributes) {
         StringBuilder queryBuilder = new StringBuilder(
                 SELECT_ALL_COMIC_DATA_QUERY +
                         "WHERE ");
-        attributes.keySet().forEach((key) -> {
+        int amountOfOrs = attributes.size() - 1;
+        for (String key : attributes.keySet()) {
             String attributeSQL = getSQLForAttribute(key);
             queryBuilder.append(attributeSQL);
-        });
-        return jdbcTemplate.query(
-                queryBuilder.toString(),
-                new ComicPreparedStatementSetter(attributes),
-                comicsExtractor);
+            if (amountOfOrs != 0) {
+                queryBuilder.append(" OR ");
+                amountOfOrs--;
+            }
+        }
+        return queryBuilder.toString();
+        //List<Integer> comicsIds = jdbcTemplate.query(queryBuilder.toString(),
+/*Map<String,Object> authorAttributes = new HashMap<>();
+//TODO: Skopiuj atrybuty tylko od autora
+//authorAttributes.pu
+        if (attributes.containsKey("first_name")) {
+            StringBuilder authorIdsQuery = new StringBuilder(
+                    "   SELECT a.id " +
+                            "       FROM authors AS a" +
+                            " WHERE ");
+        }
+        for (String key : attributes.keySet()) {
+            String attributeSQL = getSQLForAttribute(key);
+            queryBuilder.append(attributeSQL);
+        }
+        return queryBuilder.toString();*/
     }
 
     private String getSQLForAttribute(String attributeName) {
         switch (attributeName) {
             case "title":
                 return "    LOWER(c.title) like LOWER(?) ";
+            case "author_first_name":
+                return "    LOWER(a.first_name) like LOWER(?) ";
+            case "author_middle_name":
+                return "    LOWER(a.middle_name) like LOWER(?) ";
+            case "author_last_name":
+                return "    LOWER(a.last_name) like LOWER(?) ";
         }
         return "";
     }
@@ -126,7 +164,13 @@ public class ComicDAO {
         private void setAttributeValueInPreparedStatement(String attributeName, Object attributeValue) throws SQLException {
             switch (attributeName) {
                 case "title":
-                    preparedStatement.setString(currentAttributeNr, "%"+ attributeValue.toString() + "%");
+                    preparedStatement.setString(currentAttributeNr, "%" + attributeValue.toString() + "%");
+                    break;
+                case "author_first_name":
+                case "author_middle_name":
+                case "author_last_name":
+                    preparedStatement.setString(currentAttributeNr, attributeValue.toString());
+                    break;
             }
         }
     }

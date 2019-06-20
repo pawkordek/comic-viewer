@@ -20,6 +20,7 @@ import static pawkordek.comicviewer.helper.HeaderVerifier.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ComicsControllerTests {
+    private final String COMICS_SIMPLE_SEARCH_URL = "/comics-search-simple";
 
     @Autowired
     private MockMvc mvc;
@@ -53,20 +54,59 @@ public class ComicsControllerTests {
     @Test
     public void ComicsView_ShouldHave_ComicsSearchForm() throws Exception {
         mvc.perform(get("/comics"))
-                .andExpect(content().string(containsString("<form action=\"/comics\" method=\"post\">")))
-                .andExpect(content().string(containsString("Title: <input type=\"text\" value=\"\" name=\"title\"/>")))
+                .andExpect(content().string(containsString("<form action=\"/comics-search-simple\" method=\"post\">")))
+                .andExpect(content().string(containsString("Title: <input type=\"text\" value=\"\" name=\"searchCriteria\"/>")))
                 .andExpect(content().string(containsString("<input type=\"submit\" value=\"Search\"/>")));
     }
 
     @Test
-    public void ComicsView_ShouldHave_DataOfComicsThatHaveBeenSearchedForIndependentlyOfCase() throws Exception {
-        mvc.perform(post("/comics").param("title", "Tytus").with(csrf()))
+    public void ComicsView_ShouldHave_DataOfComicsThatHaveBeenSearchedByTitleForIndependentlyOfCase() throws Exception {
+        mvc.perform(post(COMICS_SIMPLE_SEARCH_URL).param("searchCriteria", "Tytus").with(csrf()))
                 .andExpect(content().string(containsString("Tytus, Romek i Atomek")))
                 .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")));
-        mvc.perform(post("/comics").param("title", "tytus").with(csrf()))
+        mvc.perform(post(COMICS_SIMPLE_SEARCH_URL).param("searchCriteria", "tytus").with(csrf()))
                 .andExpect(content().string(containsString("Tytus, Romek i Atomek")))
                 .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")));
-        mvc.perform(post("/comics").param("title", "TYTUS").with(csrf()))
+        mvc.perform(post(COMICS_SIMPLE_SEARCH_URL).param("searchCriteria", "TYTUS").with(csrf()))
+                .andExpect(content().string(containsString("Tytus, Romek i Atomek")))
+                .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")));
+    }
+
+    @Test
+    public void ComicsView_ShouldHave_DataOfComicsThatHaveBeenSearchedByAuthorFirstName() throws Exception {
+        mvc.perform(post(COMICS_SIMPLE_SEARCH_URL).param("searchCriteria", "henryk").with(csrf()))
+                .andExpect(content().string(containsString("Tytus, Romek i Atomek")))
+                .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")));
+        mvc.perform(post(COMICS_SIMPLE_SEARCH_URL).param("searchCriteria", "Henryk").with(csrf()))
+                .andExpect(content().string(containsString("Tytus, Romek i Atomek")))
+                .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")));
+        mvc.perform(post(COMICS_SIMPLE_SEARCH_URL).param("searchCriteria", "HENRYK").with(csrf()))
+                .andExpect(content().string(containsString("Tytus, Romek i Atomek")))
+                .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")));
+    }
+
+    @Test
+    public void ComicsView_ShouldHave_DataOfComicsThatHaveBeenSearchedByAuthorMiddleName() throws Exception {
+        mvc.perform(post(COMICS_SIMPLE_SEARCH_URL).param("searchCriteria", "Jerzy").with(csrf()))
+                .andExpect(content().string(containsString("Tytus, Romek i Atomek")))
+                .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")));
+        mvc.perform(post(COMICS_SIMPLE_SEARCH_URL).param("searchCriteria", "jerzy").with(csrf()))
+                .andExpect(content().string(containsString("Tytus, Romek i Atomek")))
+                .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")));
+        mvc.perform(post(COMICS_SIMPLE_SEARCH_URL).param("searchCriteria", "JERZY").with(csrf()))
+                .andExpect(content().string(containsString("Tytus, Romek i Atomek")))
+                .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")));
+    }
+
+    @Test
+    public void ComicsView_ShouldHave_DataOfComicsThatHaveBeenSearchedByAuthorLastName() throws Exception {
+        mvc.perform(post(COMICS_SIMPLE_SEARCH_URL).param("searchCriteria", "Chmielewski").with(csrf()))
+                .andExpect(content().string(containsString("Tytus, Romek i Atomek")))
+                .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")));
+        mvc.perform(post(COMICS_SIMPLE_SEARCH_URL).param("searchCriteria", "chmielewski").with(csrf()))
+                .andExpect(content().string(containsString("Tytus, Romek i Atomek")))
+                .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")));
+        mvc.perform(post(COMICS_SIMPLE_SEARCH_URL).param("searchCriteria", "CHMIELEWSKI").with(csrf()))
                 .andExpect(content().string(containsString("Tytus, Romek i Atomek")))
                 .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")));
     }

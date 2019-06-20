@@ -11,9 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import pawkordek.comicviewer.model.Comic;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertEquals;
@@ -53,25 +51,37 @@ public class ComicsServiceTests {
 
     @Test
     public void CorrectComics_ShouldBeReturned_WhenSearchingByTitleWhenItIsWrittenAsIs() {
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("title", "Asterix");
-        List<Comic> returnedComics = comicsService.getAllComicsWithAttributes(attributes);
+        List<Comic> returnedComics = comicsService.getAllComicsWithTitleOrAuthorName("Asterix");
         assertEquals(comic3, returnedComics.get(0));
     }
 
     @Test
     public void CorrectComics_ShouldBeReturned_WhenSearchingByTitleWithSmallCase() {
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("title", "asterix");
-        List<Comic> returnedComics = comicsService.getAllComicsWithAttributes(attributes);
+        List<Comic> returnedComics = comicsService.getAllComicsWithTitleOrAuthorName("Asterix");
         assertEquals(comic3, returnedComics.get(0));
     }
 
     @Test
     public void CorrectComics_ShouldBeReturned_WhenSearchingByTitleWithBigCase() {
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("title", "ASTERIX");
-        List<Comic> returnedComics = comicsService.getAllComicsWithAttributes(attributes);
+        List<Comic> returnedComics = comicsService.getAllComicsWithTitleOrAuthorName("Asterix");
         assertEquals(comic3, returnedComics.get(0));
+    }
+
+    @Test
+    public void CorrectComics_ShouldBeReturned_WhenSearchingByAuthorFirstName() {
+        List<Comic> returnedComics = comicsService.getAllComicsWithTitleOrAuthorName("Albert");
+        assertEquals(comic3, returnedComics.get(0));
+    }
+
+    @Test
+    public void CorrectComics_ShouldBeReturned_WhenSearchingByAuthorMiddleName() {
+        List<Comic> returnedComics = comicsService.getAllComicsWithTitleOrAuthorName("Jerzy");
+        assertEquals(comic2, returnedComics.get(0));
+    }
+
+    @Test
+    public void CorrectComics_ShouldBeReturned_WhenSearchingByAuthorLastName() {
+        List<Comic> returnedComics = comicsService.getAllComicsWithTitleOrAuthorName("Christa");
+        assertEquals(comic1, returnedComics.get(0));
     }
 }

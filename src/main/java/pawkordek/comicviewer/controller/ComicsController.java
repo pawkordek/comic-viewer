@@ -10,9 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import pawkordek.comicviewer.model.Comic;
 import pawkordek.comicviewer.service.ComicsService;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class ComicsController {
@@ -28,18 +26,16 @@ public class ComicsController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/comics", method = RequestMethod.POST)
-    ModelAndView comicsPOST(@RequestParam String title){
+    @RequestMapping(value = "/comics-search-simple", method = RequestMethod.POST)
+    ModelAndView performSimpleComicsSearch(@RequestParam String searchCriteria) {
         ModelAndView modelAndView = new ModelAndView("comics");
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("title", title);
-        List<Comic> comics = comicsService.getAllComicsWithAttributes(attributes);
+        List<Comic> comics = comicsService.getAllComicsWithTitleOrAuthorName(searchCriteria);
         modelAndView.addObject("comics", comics);
         return modelAndView;
     }
 
     @RequestMapping("/comic/{id}")
-    ModelAndView comic(@PathVariable("id") int id){
+    ModelAndView comic(@PathVariable("id") int id) {
         ModelAndView modelAndView = new ModelAndView("comic");
         Comic comic = comicsService.getComic(id);
         modelAndView.addObject("comic", comic);
