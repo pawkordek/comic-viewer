@@ -15,9 +15,9 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static pawkordek.comicviewer.helper.ComicVerifier.expectThatCorrectComicDataIsDisplayed;
-import static pawkordek.comicviewer.helper.HeaderVerifier.expectHeaderForLoggedInUserCalledUser;
-import static pawkordek.comicviewer.helper.HeaderVerifier.expectHeaderForNotLoggedInUser;
+import static pawkordek.comicviewer.helper.verifier.ComicVerifier.expectThatCorrectComicDataIsDisplayed;
+import static pawkordek.comicviewer.helper.verifier.HeaderVerifier.expectHeaderForLoggedInUserCalledUser;
+import static pawkordek.comicviewer.helper.verifier.HeaderVerifier.expectHeaderForNotLoggedInUser;
 
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)

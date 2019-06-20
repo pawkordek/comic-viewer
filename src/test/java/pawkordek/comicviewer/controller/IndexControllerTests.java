@@ -12,8 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static pawkordek.comicviewer.helper.HeaderVerifier.expectHeaderForLoggedInUserCalledUser;
-import static pawkordek.comicviewer.helper.HeaderVerifier.expectHeaderForNotLoggedInUser;
+import static pawkordek.comicviewer.helper.verifier.HeaderVerifier.expectHeaderForLoggedInUserCalledUser;
+import static pawkordek.comicviewer.helper.verifier.HeaderVerifier.expectHeaderForNotLoggedInUser;
 
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)

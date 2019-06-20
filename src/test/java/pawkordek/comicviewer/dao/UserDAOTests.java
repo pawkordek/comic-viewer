@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
 import pawkordek.comicviewer.model.User;
 
-import static pawkordek.comicviewer.helper.ExampleUsersProvider.user;
+import static pawkordek.comicviewer.helper.provider.ExampleUsersProvider.user;
 
 @RunWith(SpringRunner.class)
 @ComponentScan

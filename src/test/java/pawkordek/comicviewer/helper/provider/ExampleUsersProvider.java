@@ -1,4 +1,4 @@
-package pawkordek.comicviewer.helper;
+package pawkordek.comicviewer.helper.provider;
 
 import pawkordek.comicviewer.model.User;
 

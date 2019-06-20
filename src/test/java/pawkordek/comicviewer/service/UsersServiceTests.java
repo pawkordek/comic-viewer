@@ -1,7 +1,5 @@
 package pawkordek.comicviewer.service;
 
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,7 @@ import pawkordek.comicviewer.model.User;
 import pawkordek.comicviewer.model.UserAuthenticationDetails;
 
 import static org.junit.Assert.*;
-import static pawkordek.comicviewer.helper.ExampleUsersProvider.user;
+import static pawkordek.comicviewer.helper.provider.ExampleUsersProvider.user;
 
 @RunWith(SpringRunner.class)
 @ComponentScan

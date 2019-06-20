@@ -1,4 +1,4 @@
-package pawkordek.comicviewer.helper;
+package pawkordek.comicviewer.helper.verifier;
 
 import org.springframework.test.web.servlet.ResultActions;
 

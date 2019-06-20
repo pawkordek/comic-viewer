@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertEquals;
-import static pawkordek.comicviewer.helper.ExampleComicsProvider.*;
+import static pawkordek.comicviewer.helper.provider.ExampleComicsProvider.*;
 
 @RunWith(SpringRunner.class)
 @ComponentScan
