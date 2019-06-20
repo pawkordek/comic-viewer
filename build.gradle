@@ -30,8 +30,15 @@ dependencies {
     implementation group: 'org.simpleflatmapper', name: 'sfm-springjdbc', version: '6.7.0'
     implementation group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
     runtimeOnly 'com.h2database:h2'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'junit', module: 'junit'
+    } 
     testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.4.2'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.2'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.3.2'
+}
+
+test {
+    useJUnitPlatform()
 }

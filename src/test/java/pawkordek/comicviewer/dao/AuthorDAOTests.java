@@ -1,24 +1,23 @@
 package pawkordek.comicviewer.dao;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pawkordek.comicviewer.model.Author;
 import pawkordek.comicviewer.model.AuthorRole;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Collections.singletonList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @JdbcTest
 @ComponentScan
 public class AuthorDAOTests {
@@ -26,10 +25,10 @@ public class AuthorDAOTests {
     @Autowired
     private AuthorDAO authorDAO;
 
-    private List<Author> authors = new ArrayList<>();
+    private static List<Author> authors = new ArrayList<>();
 
-    @Before
-    public void setUp() {
+    @BeforeAll
+    public static void setUp() {
         AuthorRole role1 = AuthorRole.builder()
                 .id(1)
                 .name("Writer")

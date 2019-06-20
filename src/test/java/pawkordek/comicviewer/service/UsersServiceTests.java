@@ -1,19 +1,19 @@
 package pawkordek.comicviewer.service;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pawkordek.comicviewer.model.User;
 import pawkordek.comicviewer.model.UserAuthenticationDetails;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static pawkordek.comicviewer.helper.provider.ExampleUsersProvider.user;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ComponentScan
 @SpringBootTest
 public class UsersServiceTests {

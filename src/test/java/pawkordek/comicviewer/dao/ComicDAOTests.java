@@ -1,13 +1,12 @@
 package pawkordek.comicviewer.dao;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pawkordek.comicviewer.model.Comic;
 
 import java.util.ArrayList;
@@ -15,11 +14,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static pawkordek.comicviewer.helper.provider.ExampleComicsProvider.*;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ComponentScan
 @JdbcTest
 public class ComicDAOTests {
@@ -27,10 +27,10 @@ public class ComicDAOTests {
     @Autowired
     private ComicDAO comicDAO;
 
-    private List<Comic> comics = new ArrayList<>();
+    private static List<Comic> comics = new ArrayList<>();
 
-    @Before
-    public void setUp() {
+    @BeforeAll
+    public static void setUp() {
         comics.add(comic1);
         comics.add(comic2);
         comics.add(comic3);
@@ -39,7 +39,7 @@ public class ComicDAOTests {
     @Test
     public void ReturnedComics_shouldContainComics_thatWereInitializedAtTheStart() {
         List<Comic> returnedComics = comicDAO.getAll();
-        Assert.assertThat(returnedComics, hasItems(
+        assertThat(returnedComics, hasItems(
                 comic1, comic2, comic3
         ));
     }

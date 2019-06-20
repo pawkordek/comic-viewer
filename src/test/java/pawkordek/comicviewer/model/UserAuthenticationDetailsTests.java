@@ -1,10 +1,10 @@
 package pawkordek.comicviewer.model;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static pawkordek.comicviewer.helper.provider.ExampleUsersProvider.admin;
 import static pawkordek.comicviewer.helper.provider.ExampleUsersProvider.user;
 
