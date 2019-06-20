@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 import pawkordek.comicviewer.model.Comic;
+import sun.security.x509.OIDMap;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -78,8 +79,20 @@ public class ComicDAO {
     }
 
     public List<Comic> getAllWithAttributes(Map<String, Object> attributes) {
+        if (attributes.isEmpty()) {
+            return Collections.emptyList();
+        } else {
+            return getAllComicsWithAttributes(attributes);
+        }
+    }
+
+    private List<Comic> getAllComicsWithAttributes(Map<String, Object> attributes) {
         List<Integer> comicsIds = getAllComicsIdsWithAttributes(attributes);
-        return getAllComicsWithIds(comicsIds);
+        if (comicsIds.isEmpty()) {
+            return Collections.emptyList();
+        } else {
+            return getAllComicsWithIds(comicsIds);
+        }
     }
 
     private String getQueryForAllComicsWithAttributes(Map<String, Object> attributes) {

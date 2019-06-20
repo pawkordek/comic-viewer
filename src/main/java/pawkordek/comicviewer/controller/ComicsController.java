@@ -29,7 +29,7 @@ public class ComicsController {
     @RequestMapping(value = "/comics-search-simple", method = RequestMethod.POST)
     ModelAndView performSimpleComicsSearch(@RequestParam String searchCriteria) {
         ModelAndView modelAndView = new ModelAndView("comics");
-        List<Comic> comics = comicsService.getAllComicsWithTitleOrAuthorName(searchCriteria);
+        List<Comic> comics = comicsService.getAllComicsWithTitleOrAuthorNameLike(searchCriteria);
         modelAndView.addObject("comics", comics);
         return modelAndView;
     }

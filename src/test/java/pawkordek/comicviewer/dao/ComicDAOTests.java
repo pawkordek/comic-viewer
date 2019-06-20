@@ -9,10 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pawkordek.comicviewer.model.Comic;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
@@ -52,6 +49,21 @@ public class ComicDAOTests {
     }
 
     @Test
+    public void EmptyList_shouldBeReturned_whenNoComicsFound() {
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("title", "This title doesn't exist");
+        List<Comic> returnedComics = comicDAO.getAllWithAttributes(attributes);
+        assertEquals(Collections.emptyList(), returnedComics);
+    }
+
+    @Test
+    public void EmptyList_shouldBeReturned_whenSearchingWithEmptyListOfAttributes() {
+        List<Comic> returnedComics = comicDAO.getAllWithAttributes(Collections.emptyMap());
+        assertEquals(Collections.emptyList(), returnedComics);
+
+    }
+
+    @Test
     public void CorrectComics_ShouldBeReturned_WhenSearchingByTitleWhenItIsWrittenAsIs() {
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("title", "Asterix");
@@ -76,7 +88,7 @@ public class ComicDAOTests {
     }
 
     @Test
-    public void CorrectComics_ShouldBeReturned_WhenSearchingByAuthorFirstName(){
+    public void CorrectComics_ShouldBeReturned_WhenSearchingByAuthorFirstName() {
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("author_first_name", "Albert");
         List<Comic> returnedComics = comicDAO.getAllWithAttributes(attributes);
@@ -84,7 +96,7 @@ public class ComicDAOTests {
     }
 
     @Test
-    public void CorrectComics_ShouldBeReturned_WhenSearchingByAuthorMiddleName(){
+    public void CorrectComics_ShouldBeReturned_WhenSearchingByAuthorMiddleName() {
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("author_middle_name", "Jerzy");
         List<Comic> returnedComics = comicDAO.getAllWithAttributes(attributes);
@@ -92,7 +104,7 @@ public class ComicDAOTests {
     }
 
     @Test
-    public void CorrectComics_ShouldBeReturned_WhenSearchingByAuthorLastName(){
+    public void CorrectComics_ShouldBeReturned_WhenSearchingByAuthorLastName() {
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("author_last_name", "Christa");
         List<Comic> returnedComics = comicDAO.getAllWithAttributes(attributes);
