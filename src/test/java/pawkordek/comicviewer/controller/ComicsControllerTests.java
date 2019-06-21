@@ -15,7 +15,8 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static pawkordek.comicviewer.helper.verifier.ComicVerifier.*;
+import static pawkordek.comicviewer.helper.verifier.ComicVerifier.expectThatAllComicsDataIsDisplay;
+import static pawkordek.comicviewer.helper.verifier.ComicVerifier.expectThatComic2DataIsDisplayed;
 import static pawkordek.comicviewer.helper.verifier.HeaderVerifier.expectHeaderForLoggedInUserCalledUser;
 import static pawkordek.comicviewer.helper.verifier.HeaderVerifier.expectHeaderForNotLoggedInUser;
 
@@ -83,7 +84,7 @@ public class ComicsControllerTests {
     }
 
     @Test
-    public void ComicsView_ShouldHave_DataOfComicsThatHaveBeenSearchedByAuthorFirstName() throws Exception {
+    public void ComicsView_shouldHave_dataOfComicsThatHaveBeenSearchedByAuthorFirstName() throws Exception {
         expectThatComic2DataIsDisplayed(
                 performSimpleComicsSearchWithSearchCriteria("henryk")
         );
@@ -96,7 +97,7 @@ public class ComicsControllerTests {
     }
 
     @Test
-    public void ComicsView_ShouldHave_DataOfComicsThatHaveBeenSearchedByAuthorMiddleName() throws Exception {
+    public void ComicsView_shouldHave_dataOfComicsThatHaveBeenSearchedByAuthorMiddleName() throws Exception {
         expectThatComic2DataIsDisplayed(
                 performSimpleComicsSearchWithSearchCriteria("Jerzy")
         );
@@ -109,7 +110,7 @@ public class ComicsControllerTests {
     }
 
     @Test
-    public void ComicsView_ShouldHave_DataOfComicsThatHaveBeenSearchedByAuthorLastName() throws Exception {
+    public void ComicsView_shouldHave_dataOfComicsThatHaveBeenSearchedByAuthorLastName() throws Exception {
         expectThatComic2DataIsDisplayed(
                 performSimpleComicsSearchWithSearchCriteria("Chmielewski")
         );
@@ -126,21 +127,21 @@ public class ComicsControllerTests {
     }
 
     @Test
-    public void ComicUrl_ShouldMap_ToComicView() throws Exception {
+    public void ComicUrl_shouldMap_toComicView() throws Exception {
         mvc.perform(get("/comic/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("comic"));
     }
 
     @Test
-    public void ComicView_ShouldHave_AllHeaderLinks() throws Exception {
+    public void ComicView_shouldHave_allHeaderLinks() throws Exception {
         mvc.perform(get("/comic/1"))
                 .andExpect(content().string(containsString("<a href=\"/\">HOME</a>")))
                 .andExpect(content().string(containsString("<a href=\"/comics\">ALL COMICS</a>")));
     }
 
     @Test
-    public void ComicView_ShouldHave_AllComicInformationDisplayed() throws Exception {
+    public void ComicView_shouldHave_allComicInformationDisplayed() throws Exception {
         mvc.perform(get("/comic/2"))
                 .andExpect(content().string(containsString("Tytus, Romek i Atomek")))
                 .andExpect(content().string(containsString("Henryk Jerzy Chmielewski")))
@@ -148,13 +149,13 @@ public class ComicsControllerTests {
     }
 
     @Test
-    public void ComicView_ShouldHave_ComicCoverWithAltMessage() throws Exception {
+    public void ComicView_shouldHave_comicCoverWithAltMessage() throws Exception {
         mvc.perform(get("/comic/1"))
                 .andExpect(content().string(containsString("<img alt=\"Image not available\" src=\"/comics/kajko_kokosz/cover.jpg\"/>")));
     }
 
     @Test
-    public void ComicView_ShouldHave_ListOfChapters() throws Exception {
+    public void ComicView_shouldHave_listOfChapters() throws Exception {
         mvc.perform(get("/comic/1"))
                 .andExpect(content().string(containsString("<a href=\"/comics/1/chapters/0/pages/1\">Chapter 1 - KK1</a>\n")))
                 .andExpect(content().string(containsString("<a href=\"/comics/1/chapters/1/pages/1\">Chapter 2 - KK2</a>\n")));
@@ -183,7 +184,7 @@ public class ComicsControllerTests {
     }
 
     @Test
-    public void AdvancedComicsSearchView_shouldContainSearchForm() throws Exception {
+    public void AdvancedComicsSearchView_shouldContain_searchForm() throws Exception {
         mvc.perform(get(ADVANCED_COMICS_SEARCH_URL))
                 .andExpect(content().string(containsString("<form action=\"/comics-advanced-search\" method=\"post\">")))
                 .andExpect(content().string(containsString("Search comics by:")))
@@ -232,11 +233,8 @@ public class ComicsControllerTests {
 
     @Test
     public void AdvancedComicSearchView_shouldHaveCorrectComics_whenSearchingByTag() throws Exception {
-        expectThatComic1DataIsDisplayed(
-                expectThatComic2DataIsDisplayed(
-                        expectThatComic3DataIsDisplayed(
-                                mvc.perform(post(ADVANCED_COMICS_SEARCH_URL).param("selectedTags", "1,2").with(csrf()))
-                        ))
+        expectThatAllComicsDataIsDisplay(
+                mvc.perform(post(ADVANCED_COMICS_SEARCH_URL).param("selectedTags", "1,2").with(csrf()))
         );
     }
 }

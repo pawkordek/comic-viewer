@@ -27,4 +27,11 @@ public class ComicVerifier {
                 .andExpect(content().string(containsString("Albert  Uderzo")));
 
     }
+
+    public static ResultActions expectThatAllComicsDataIsDisplay(ResultActions resultActions) throws Exception {
+        return expectThatComic1DataIsDisplayed(
+                expectThatComic2DataIsDisplayed(
+                        expectThatComic3DataIsDisplayed(resultActions)));
+    }
+
 }
