@@ -27,13 +27,13 @@ public class UsersControllerTests {
     MockMvc mvc;
 
     @Test
-    public void LoginView_ShouldHaveProperHeaderLinks_WhenNotLoggedIn() throws Exception {
+    public void LoginView_shouldHaveProperHeaderLinks_whenNotLoggedIn() throws Exception {
         expectHeaderForNotLoggedInUser(mvc.perform(get("/login")));
     }
 
     @WithMockUser(username = "user")
     @Test
-    public void LoginView_ShouldHaveProperHeaderLinks_WhenLoggedIn() throws Exception {
+    public void LoginView_shouldHaveProperHeaderLinks_whenLoggedIn() throws Exception {
         expectHeaderForLoggedInUserCalledUser(mvc.perform(get("/login")));
     }
 
@@ -65,7 +65,7 @@ public class UsersControllerTests {
 
     @WithMockUser(roles = {"user"})
     @Test
-    public void ShouldShow_UserProfile_whenLoggedIn() throws Exception {
+    public void ShouldShow_userProfile_afterLoggingIn() throws Exception {
         mvc.perform(get("/user-profile"))
                 .andExpect(view().name("user_profile"));
     }
@@ -77,7 +77,7 @@ public class UsersControllerTests {
     }
 
     @Test
-    public void LoginView_ShouldHave_LoginForm() throws Exception {
+    public void LoginView_shouldHave_loginForm() throws Exception {
         mvc.perform(get("/login"))
                 .andExpect(content().string(containsString("<form action=\"/login\" method=\"post\">")))
                 .andExpect(content().string(containsString("Login: <input type=\"text\" value=\"\" name=\"username\"/>")))
@@ -86,7 +86,7 @@ public class UsersControllerTests {
     }
 
     @Test
-    public void LoginView_shouldDisplayWelcomeMessage_IfPassedInARegisteredUsername() throws Exception {
+    public void LoginView_shouldDisplayWelcomeMessage_ifPassedInARegisteredUsername() throws Exception {
         mvc.perform(get("/login?registeredUser=user"))
                 .andExpect(content().string(containsString("Welcome to Comic Reader, USER!")));
     }
