@@ -44,13 +44,13 @@ public class UsersControllerTests {
     }
 
     @Test
-    public void LoginWithCorrectData_should_work() throws Exception {
+    public void LoginWithCorrectData_shouldRedirectToMainPage() throws Exception {
         RequestBuilder loginRequest = post("/login").with(csrf())
                 .param("username", "user")
                 .param("password", "user");
 
         mvc.perform(loginRequest)
-                .andExpect(status().is3xxRedirection());
+                .andExpect(redirectedUrl("/"));
     }
 
     @Test
@@ -70,13 +70,13 @@ public class UsersControllerTests {
     }
 
     @Test
-    public void LoginWithEmptyLoginAndPassword_should_notWork() throws Exception {
-        RequestBuilder loginRequest = post("/login")
+    public void LoginWithEmptyLoginAndPassword_shouldNotWork() throws Exception {
+        RequestBuilder loginRequest = post("/login").with(csrf())
                 .param("username", "")
                 .param("password", "");
 
         mvc.perform(loginRequest)
-                .andExpect(status().isForbidden());
+                .andExpect(redirectedUrl("/login?error"));
     }
 
     @WithMockUser(roles = {"user"})
