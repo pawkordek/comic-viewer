@@ -63,6 +63,16 @@ public class UsersControllerTests {
                 .andExpect(status().isForbidden());
     }
 
+    @Test
+    public void LoginWithEmptyLoginAndPassword_should_notWork() throws Exception {
+        RequestBuilder loginRequest = post("/login")
+                .param("username", "")
+                .param("password", "");
+
+        mvc.perform(loginRequest)
+                .andExpect(status().isForbidden());
+    }
+
     @WithMockUser(roles = {"user"})
     @Test
     public void ShouldShow_userProfile_afterLoggingIn() throws Exception {
