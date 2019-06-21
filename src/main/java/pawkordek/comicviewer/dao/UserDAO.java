@@ -1,9 +1,11 @@
 package pawkordek.comicviewer.dao;
 
+import lombok.NonNull;
 import org.simpleflatmapper.jdbc.spring.JdbcTemplateCrud;
 import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.*;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import pawkordek.comicviewer.model.User;
 
@@ -12,11 +14,14 @@ import java.util.List;
 @Repository
 public class UserDAO {
 
-    private JdbcTemplate jdbcTemplate;
+    @NonNull
+    private final JdbcTemplate jdbcTemplate;
 
+    @NonNull
     private final RowMapper<User> userRowMapper =
             JdbcTemplateMapperFactory.newInstance().newRowMapper(User.class);
 
+    @NonNull
     private final JdbcTemplateCrud<User, Integer> userCrud;
 
     @Autowired

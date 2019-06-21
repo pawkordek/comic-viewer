@@ -1,5 +1,7 @@
 package pawkordek.comicviewer.service;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,11 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UsersService implements UserDetailsService {
-    @Autowired
-    private UserDAO userDAO;
+    @NonNull
+    private final UserDAO userDAO;
 
-    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @NonNull
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public User getUserWithName(String name) {
         return userDAO.getUserWithName(name);

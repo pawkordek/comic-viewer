@@ -1,5 +1,7 @@
 package pawkordek.comicviewer.controller;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,13 +17,14 @@ import pawkordek.comicviewer.service.TagsService;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ComicsController {
 
-    @Autowired
-    ComicsService comicsService;
+    @NonNull
+    private final ComicsService comicsService;
 
-    @Autowired
-    TagsService tagsService;
+    @NonNull
+    private final TagsService tagsService;
 
     @RequestMapping(value = "/comics", method = RequestMethod.GET)
     ModelAndView comicsGET() {

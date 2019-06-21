@@ -1,6 +1,9 @@
 package pawkordek.comicviewer.model;
 
 import lombok.EqualsAndHashCode;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,12 +12,10 @@ import java.util.Collection;
 import java.util.Collections;
 
 @EqualsAndHashCode
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserAuthenticationDetails implements UserDetails {
+    @NonNull
     private final User user;
-
-    public UserAuthenticationDetails(User user) {
-        this.user = user;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

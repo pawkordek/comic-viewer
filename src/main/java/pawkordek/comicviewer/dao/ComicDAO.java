@@ -1,6 +1,7 @@
 package pawkordek.comicviewer.dao;
 
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,11 @@ import static pawkordek.comicviewer.dao.helper.SQLFormatter.prepareInClause;
 
 
 @Repository
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ComicDAO {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    @NonNull
+    private final JdbcTemplate jdbcTemplate;
 
     private final ResultSetExtractor<List<Comic>> comicsExtractor =
             JdbcTemplateMapperFactory

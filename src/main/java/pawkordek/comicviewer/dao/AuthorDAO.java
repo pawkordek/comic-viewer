@@ -1,5 +1,7 @@
 package pawkordek.comicviewer.dao;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,10 +15,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AuthorDAO {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    @NonNull
+    private final JdbcTemplate jdbcTemplate;
 
     private final String SELECT_ALL_AUTHOR_DATA_QUERY =
             "       SELECT " +

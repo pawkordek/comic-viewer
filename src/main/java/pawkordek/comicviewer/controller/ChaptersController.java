@@ -1,5 +1,7 @@
 package pawkordek.comicviewer.controller;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,10 +11,11 @@ import pawkordek.comicviewer.model.Comic;
 import pawkordek.comicviewer.service.ComicsService;
 
 @Controller
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ChaptersController {
 
-    @Autowired
-    ComicsService comicsService;
+    @NonNull
+    private final ComicsService comicsService;
 
     @RequestMapping("/comics/{comicId}/chapters/{chapterId}/pages/{pageId}")
     ModelAndView page(@PathVariable("comicId") int comicId,

@@ -1,5 +1,7 @@
 package pawkordek.comicviewer.dao;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,16 +12,14 @@ import pawkordek.comicviewer.model.Tag;
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TagDAO {
 
+    @NonNull
     private final JdbcTemplate jdbcTemplate;
 
+    @NonNull
     private final RowMapper<Tag> tagRowMapper = JdbcTemplateMapperFactory.newInstance().newRowMapper(Tag.class);
-
-    @Autowired
-    public TagDAO(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     public List<Tag> getAll() {
         return jdbcTemplate.query(

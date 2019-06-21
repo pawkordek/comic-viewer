@@ -1,5 +1,7 @@
 package pawkordek.comicviewer.service;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -11,10 +13,11 @@ import pawkordek.comicviewer.model.Comic;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ComicsService {
 
-    @Autowired
-    ComicDAO comicDAO;
+    @NonNull
+    private final ComicDAO comicDAO;
 
     public List<Comic> getAllComics() {
         return comicDAO.getAll();
