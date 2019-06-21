@@ -54,13 +54,19 @@ public class UsersControllerTests {
     }
 
     @Test
-    public void LoginWithIncorrectData_should_notWork() throws Exception {
-        RequestBuilder loginRequest = post("/login")
+    public void LoginWithIncorrectData_shouldNotWork() throws Exception {
+        RequestBuilder loginRequest = post("/login").with(csrf())
                 .param("username", "not a correct user name")
                 .param("password", "not a correct password");
 
         mvc.perform(loginRequest)
-                .andExpect(status().isForbidden());
+                .andExpect(redirectedUrl("/login?error"));
+    }
+
+    @Test
+    public void LoginView_withErrorParameter_shouldDisplayErrorMessage() throws Exception {
+        mvc.perform(get("/login?error"))
+                .andExpect(content().string(containsString("Invalid login or password.")));
     }
 
     @Test

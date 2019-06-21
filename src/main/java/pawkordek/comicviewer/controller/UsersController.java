@@ -22,7 +22,7 @@ public class UsersController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(@RequestParam(required = false) String registeredUser) {
+    public String displayLogin(@RequestParam(required = false) String registeredUser) {
         return "login";
     }
 
