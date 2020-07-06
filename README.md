@@ -67,3 +67,6 @@ $ ./gradlew.exe test
 
 ## Database Relationship Diagram
 ![Image of database relationship diagram](/img/db_diagram.png)
+
+## License
+comic-viewer is licensed under *GNU AFFERO GENERAL PUBLIC LICENSE Version 3*
