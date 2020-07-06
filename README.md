@@ -64,3 +64,6 @@ $ ./gradlew.exe test
   * [H2 database](https://github.com/h2database/h2database)
   * [Junit 5](https://github.com/junit-team/junit5)
   * [Lombok](https://github.com/rzwitserloot/lombok)
+
+## Database Relationship Diagram
+![Image of database relationship diagram](/img/db_diagram.png)
